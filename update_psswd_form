@@ -8,15 +8,18 @@ To run this script successfully, place all files with leaked passwords in the 'p
 from multiprocessing import Process, Manager
 import sys
 import os
+from colorama import Fore, Back, Style
 
 dir_psswd = 'passwords' # directory where standard password wordlists are stored
 dir_output = 'processed' # directory where the processed output will be stored
-file_form = 'format.txt' # file name of the file where output will be stored
+file_form = 'format.txt' # file name of the file where password formats will be stored
+file_len = 'length.txt' # file name of the file where password lengths
 
 files = os.scandir(dir_psswd) # All files in the 'passwords' directory as a generator for efficiency
 
 processes = [] # List of processes to deal with reading the files
 forms = Manager().dict() # Dictionary to hold the formats and their count
+lengths = Manager().dict() # Dictionary to hold password lengths and their count
 
 
 def exists_in_dict(dictio, key):
@@ -28,7 +31,7 @@ def exists_in_dict(dictio, key):
             return True
     return False
 
-def passwd_file_to_format(forms, fd):
+def passwd_file_to_format(forms, lengths, fd):
     """
     Process to read file and create formats along with their counts
     """
@@ -37,6 +40,7 @@ def passwd_file_to_format(forms, fd):
         for passwd in fd:
             form = ''
             passwd = passwd.split('\n')[0]
+            length = len(passwd)
             for char in passwd:
                 if char.isdigit():
                     form += 'd'
@@ -52,10 +56,14 @@ def passwd_file_to_format(forms, fd):
                 forms[form] += 1
             else:
                 forms[form] = 1
-    print('Finished process for', fd.name)
+            if exists_in_dict(lengths, length):
+                lengths[length] += 1
+            else:
+                lengths[length] = 1
+        print('Finished process for', fd.name)
 
 for f in files:
-    processes.append(Process(target=passwd_file_to_format, args=(forms, f,)))
+    processes.append(Process(target=passwd_file_to_format, args=(forms, lengths, f,)))
 
 for process in processes:
     process.start()
@@ -64,9 +72,14 @@ for process in processes:
     process.join()
 
 print('Sorting the results')
-new_forms={key: value for key, value in sorted(forms.items(), key=lambda item: item[1])}
+forms={key: value for key, value in sorted(forms.items(), key=lambda item: item[1])}
+lenths={key: value for key, value in sorted(lengths.items(), key=lambda item: item[1])}
 
 with open(dir_output+'/'+file_form, 'w') as fd:
     print('Writing to', fd.name)
-    for form, count in new_forms.items():
+    for form, count in forms.items():
         fd.write(form+' '+str(count)+'\n')
+with open(dir_output+'/'+file_len, 'w') as fd:
+    print('Writing to', fd.name)
+    for length, count in lengths.items():
+        fd.write(str(length)+' '+str(count)+'\n')
