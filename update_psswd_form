@@ -4,23 +4,46 @@
 To run this script successfully, place all files with leaked passwords in the 'passwords' directory. The output will be written to the 'form' directory.
 """
 
-#from threading import Thread, Lock
 from multiprocessing import Process, Manager
 import sys
 import os
+import time
 from colorama import Fore, Back, Style
+from datetime import datetime
+import math
 
-dir_psswd = 'passwords' # directory where standard password wordlists are stored
-dir_output = 'processed' # directory where the processed output will be stored
-file_form = 'format.txt' # file name of the file where password formats will be stored
-file_len = 'length.txt' # file name of the file where password lengths
 
-files = os.scandir(dir_psswd) # All files in the 'passwords' directory as a generator for efficiency
 
-processes = [] # List of processes to deal with reading the files
-forms = Manager().dict() # Dictionary to hold the formats and their count
-lengths = Manager().dict() # Dictionary to hold password lengths and their count
+def print_r_date(text):
+    d = Back.BLUE+datetime.now().strftime('[%H:%M:%S]')+Style.RESET_ALL
+    print('\033[K'+d+' '+text, end='\r')
 
+def print_wdate(*args, **kwargs):
+    d = Back.BLUE+datetime.now().strftime('[%H:%M:%S]')+Style.RESET_ALL
+    print(d+' '.join(args), **kwargs)
+
+def get_passwords(fd):
+    """
+    Get passwords from a file
+    """
+    passwds = []
+    with open(fd, 'r') as fd:
+        for passwd in fd:
+            passwds.append(passwd.split(' ')[0])
+
+    return passwds
+
+def div_passwords(passwds, div_size):
+    """
+    """
+    p_lists = []
+    nr_divs = math.floor(len(passwds)/div_size)
+    for i in range(nr_divs):
+        p_lists.append(passwds[i*div_size:(i+1)*div_size])
+
+    if len(passwds)>(nr_divs*div_size):
+        p_lists.append(passwds[(nr_divs*div_size):])
+    return p_lists
 
 def exists_in_dict(dictio, key):
     """
@@ -31,55 +54,200 @@ def exists_in_dict(dictio, key):
             return True
     return False
 
-def passwd_file_to_format(forms, lengths, fd):
+def sort_by_count(dictio):
+    return {key: value for key, value in sorted(dictio.items(), key=lambda item: item[1])}
+
+def passwd_file_to_format(forms_dict, lengths_dict, chars_dict, nchars_dict,
+                          dchars_dict, schars_dict, passwds, fd, index,
+                          pr_psswds):
     """
     Process to read file and create formats along with their counts
     """
-    with open(fd, 'r') as fd:
-        print('Starting process for', fd.name)
-        for passwd in fd:
+    try:
+        for passwd in passwds: # parse the lines in the file
             form = ''
             passwd = passwd.split('\n')[0]
             length = len(passwd)
-            for char in passwd:
-                if char.isdigit():
-                    form += 'd'
-                elif char.isalpha():
-                    if char.isupper():
-                        form += 'C'
+            if length>0:
+                for char in passwd:
+                    if exists_in_dict(chars_dict, char):
+                        chars_dict[char] +=1
                     else:
-                        form += 'c'
+                        chars_dict[char] = 1
+                    if char.isdigit():
+                        form += 'd'
+                        if exists_in_dict(dchars_dict, char):
+                            dchars_dict[char] += 1
+                        else:
+                            dchars_dict[char] = 1
+                    elif char.isalpha():
+                        if exists_in_dict(nchars_dict, char):
+                            nchars_dict[char] += 1
+                        else:
+                            nchars_dict[char] = 1
+                        if char.isupper():
+                            form += 'C'
+                        else:
+                            form += 'c'
+                    else:
+                        form += 's'
+                        if exists_in_dict(schars_dict, char):
+                            schars_dict[char] += 1
+                        else:
+                            schars_dict[char] = 1
+                        
+
+                if exists_in_dict(forms_dict, form): # check if the format already exists in the dict
+                    forms_dict[form] += 1
                 else:
-                    form += 's'
-
-            if exists_in_dict(forms, form):
-                forms[form] += 1
+                    forms_dict[form] = 1
+                if exists_in_dict(lengths_dict, length): # check if the length already exists in the dict
+                    lengths_dict[length] += 1
+                else:
+                    lengths_dict[length] = 1
+            if exists_in_dict(pr_psswds, 'done'):
+                pr_psswds['done'] += 1
             else:
-                forms[form] = 1
-            if exists_in_dict(lengths, length):
-                lengths[length] += 1
-            else:
-                lengths[length] = 1
-        print('Finished process for', fd.name)
+                pr_psswds['done'] = 1
+        print_wdate(Fore.GREEN+'--['+str(index)+']--'+Style.RESET_ALL+'Finished process for', fd.name)
+    except Exception as e:
+        print(Fore.RED+'[ERROR]'+Style.RESET_ALL+' process unsuccessful')
+        print(Fore.RED+str(e)+Style.RESET_ALL)
 
-for f in files:
-    processes.append(Process(target=passwd_file_to_format, args=(forms, lengths, f,)))
+dir_psswd = 'passwords' # directory where standard password wordlists are stored
+dir_output = 'processed' # directory where the processed output will be stored
+file_form = 'format.txt' # file name of the file where password formats will be stored
+file_len = 'length.txt' # file name of the file where password lengths will be stored
+file_char = 'char.txt' # file name of the file where used chars will be stored
+file_schar = 'schar.txt' # file name of the file where used special chars will be stored
+file_dchar = 'dchar.txt' # file name of the file where used digit chars will be stored
+file_nchar = 'nchar.txt' # file name of the file where used normal chars will be stored
+max_prccs = 260
+div_size = 1000
+feedback_time = 5
 
+files = os.scandir(dir_psswd) # All files in the 'passwords' directory as a generator for efficiency
+
+processes = [] # List of processes to deal with reading the files
+forms_dict = Manager().dict() # Dictionary to hold the formats and their count
+lengths_dict = Manager().dict() # Dictionary to hold password lengths and their count
+chars_dict = Manager().dict() # Dictionary to hold used characters and their count
+schars_dict = Manager().dict() # Dictionary to hold used special characters and their count
+dchars_dict = Manager().dict() # Dictionary to hold used digit characters and their count
+nchars_dict = Manager().dict() # Dictionary to hold used normal characters and their count
+pr_psswds = Manager().dict()
+
+nr_passwds=0
+nr_prccs=0
+for f in files: # parse the files
+    print(Fore.YELLOW+'...Parsing:'+f.name+Style.RESET_ALL)
+    psswds = get_passwords(f)
+    nr_passwds += len(psswds)
+    p_lists = div_passwords(psswds, div_size)
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Starting', len(p_lists), 'processes for',
+          Fore.YELLOW+f.name+Style.RESET_ALL)
+    for p_list in p_lists:
+        nr_prccs += 1
+        print_wdate(Fore.GREEN+'--['+str(nr_prccs)+']--'+Style.RESET_ALL, end='')
+        print(f.name, len(p_list), 'passwords')
+        processes.append(Process(target=passwd_file_to_format, args=(forms_dict,
+                                                                     lengths_dict,
+                                                                     chars_dict,
+                                                                     nchars_dict,
+                                                                     dchars_dict,
+                                                                     schars_dict,
+                                                                     p_list,f,nr_prccs,
+                                                                     pr_psswds)))
+print('Processing', nr_passwds)
+pr_psswds['total'] = nr_passwds
+        
+# Check if not too many processes will be running
+if nr_prccs >= max_prccs:
+    print(Fore.RED, '[ERROR]', Style.RESET_ALL,
+          'Too many files/passwords to process with separate processes. '\
+          'Please lower amount of processes. This might slow the program down,'\
+          ' but will allow it to run. Maximum processes:', max_prccs,
+          'Current number is', nr_prccs)
+    sys.exit(1)
+
+start_time = time.time() # start time of the processes
 for process in processes:
     process.start()
 
+# Update user on processes that are still running
+running = True
+running_time = time.time()
+try:
+    while running:
+        running=False
+        ctr=0
+        indexes=[]
+        for process in processes:
+            ctr+=1
+            if process.is_alive():
+                indexes.append(str(ctr))
+                running=True
+        if time.time()-running_time>feedback_time:
+            print_r_date(Fore.GREEN+str(pr_psswds['done'])+'/'+str(pr_psswds['total'])+Fore.YELLOW+ \
+                         '('+str(int(pr_psswds['done']/pr_psswds['total']*100))+'%)'+ \
+                         '--Still running:'+ \
+                         Fore.CYAN + \
+                         ','.join(indexes[:10])+'...'+Style.RESET_ALL)
+            running_time = time.time()
+            time.sleep(1)
+            print_r_date(Fore.GREEN+str(pr_psswds['done'])+'/'+str(pr_psswds['total'])+Fore.YELLOW+ \
+                         '('+str(int(pr_psswds['done']/pr_psswds['total']*100))+'%)'+ \
+                         '--Still running:'+ \
+                         Fore.CYAN + \
+                         ','.join(indexes[:10])+'...'+Style.RESET_ALL)
+except KeyboardInterrupt:
+    print('Exiting')
+    sys.exit(0)
+        
+# Ensure safe exit for all processes
 for process in processes:
     process.join()
 
-print('Sorting the results')
-forms={key: value for key, value in sorted(forms.items(), key=lambda item: item[1])}
-lenths={key: value for key, value in sorted(lengths.items(), key=lambda item: item[1])}
+print(Fore.GREEN, '\n[SUCCESS]', Style.RESET_ALL, 'Sorting the results\n')
+
+# Sort results in their respective files
+forms_dict=sort_by_count(forms_dict)
+lengths_dict=sort_by_count(lengths_dict)
+chars_dict=sort_by_count(chars_dict)
+nchars_dict=sort_by_count(nchars_dict)
+dchars_dict=sort_by_count(dchars_dict)
+schars_dict=sort_by_count(schars_dict)
 
 with open(dir_output+'/'+file_form, 'w') as fd:
-    print('Writing to', fd.name)
-    for form, count in forms.items():
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for form, count in forms_dict.items():
         fd.write(form+' '+str(count)+'\n')
+
 with open(dir_output+'/'+file_len, 'w') as fd:
-    print('Writing to', fd.name)
-    for length, count in lengths.items():
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for length, count in lengths_dict.items():
         fd.write(str(length)+' '+str(count)+'\n')
+
+with open(dir_output+'/'+file_char, 'w') as fd:
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for char, count in chars_dict.items():
+        fd.write(str(char)+' '+str(count)+'\n')
+
+with open(dir_output+'/'+file_nchar, 'w') as fd:
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for nchar, count in nchars_dict.items():
+        fd.write(str(nchar)+' '+str(count)+'\n')
+
+with open(dir_output+'/'+file_dchar, 'w') as fd:
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for dchar, count in dchars_dict.items():
+        fd.write(str(dchar)+' '+str(count)+'\n')
+
+with open(dir_output+'/'+file_schar, 'w') as fd:
+    print(Fore.YELLOW+'### '+Style.RESET_ALL+'Writing to', fd.name)
+    for schar, count in schars_dict.items():
+        fd.write(str(schar)+' '+str(count)+'\n')
+
+# Display time it took to complete processes in seconds
+print(Fore.YELLOW+'Processed',nr_passwds,'in', int(time.time()-start_time),
+      'seconds'+Style.RESET_ALL)

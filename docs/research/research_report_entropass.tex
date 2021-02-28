@@ -1,0 +1,202 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{listings, lstautogobble}
+\usepackage{tikz}
+\usepackage{graphicx}
+%\graphicspath{ {./images/} }
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\urlstyle{same}
+
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+
+% Code listing init
+\lstset{
+  keywordstyle=\color{RoyalBlue},
+  basicstyle=\scriptsize\ttfamily,
+  commentstyle=\ttfamily\itshape\color{gray},
+  stringstyle=\ttfamily,
+  showstringspaces=false,
+  breaklines=true,
+  frameround=ffff,
+  frame=single,
+  language=bash,
+  rulecolor=\color{black},
+  autogobble=true
+}
+
+\pagestyle{headings}
+
+\begin{document}
+
+\markright{Entropass}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+  % \maketitle
+  \begin{center}
+    \vspace*{1cm}
+
+    \Huge
+    \textbf{Research Report}
+
+    \vspace{0.5cm}
+    \LARGE
+    Entropass
+
+    \vspace{1.5cm}
+
+    \textbf{Jochem Stevense}
+
+    \vfill
+
+    A research report presented for the design \& implementation of Entropass
+
+    \vspace{0.8cm}
+
+    % \includegraphics[width=0.4\textwidth]{imagefile}
+
+    \Large
+    Embedded Systems Engineering\\
+    Flexible Project\\
+    Hogeschool van Arnhem en Nijmegen\\
+    Ton Ammerlaan, Remko Welling\\
+    The Netherlands\\
+    2021\\
+    Version 0.1
+  \end{center}
+\end{titlepage}
+
+\thispagestyle{plain}
+\begin{center}
+    \Large
+    \textbf{Research Report}
+        
+    \vspace{0.4cm}
+    \large
+    Entropass
+        
+    \vspace{0.4cm}
+    \textbf{Jochem Stevense}
+       
+    \vspace{0.9cm}
+    \textbf{Abstract}
+  \end{center}
+  put some text here
+  \newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+\newpage
+
+\section{Research}
+
+\subsection{Research Plan}
+\label{ch:rp}
+To be able to create a program that fulfils the requirements, a main research question has been formulated and divided into several sub-questions.\\
+
+The main research question is the following:
+
+\vspace{0.3cm}
+\textit{What functionalities should a password guessing tool have to be able to utilise standard password practices in guessing the password of a specific user?}
+\vspace{0.3cm}
+
+To be able to answer the main research question, it is split into sub-questions. These sub-questions are the following:
+
+\vspace{0.3cm}
+\begin{enumerate}
+\item \textit{What are standard password formats?}
+\item \textit{What personal information is relevant for password guessing?}
+\item \textit{How can the processing of the information be done efficiently, from a technical perspective?}
+\item \textit{How can the program remain up to date with changing password practices?}
+\end{enumerate}
+\vspace{0.3cm}
+
+The combination of the sub-questions will be used to answer the main question and to help design the program.
+
+\subsection{Research Methodology}
+
+The research methodology will deal with the methods, used to answer the sub-questions and the main question, formulated in chapter \ref{ch:rp}. Firstly, the sub-questions will be handled, after which the main research question will be dealt with.
+
+\begin{enumerate}
+\item \textit{What are standard password formats?}\\
+  To answer this question, a desk research will be conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats will be sorted in a list of most used to least used. This will be done by a simple Python script, which will be written specifically for the use of this research. The script will be made available for interested parties with the final project.
+  
+\item \textit{What personal information is relevant for password guessing?}\\
+  Passwords are often based on personal information to make them easier to memorise. This personal information should be mapped to categories, to determine what a person is most likely to use for a memorable password. This will be done by desk research. This desk research will involve the use of word lists from data breaches and analysing these manually to determine what categories are popular amongst users. Categories might involve aspects like, relationships, date of birth, pet names, etc.
+  
+\item \textit{How can the processing of the information be done efficiently, from a technical perspective?}\\
+  To be able to answer this question, a test setup will be created, where the setup will be used to iterate random information, using different design techniques. This process will be timed to determine which of the design techniques should be used for the program.
+
+\item \textit{How can the program remain up to date with changing password practices?}
+  This question will be answered by looking into sources of information for password practices, after which possibilities will be researched for gathering this information and analysing it in an automatised way.
+\end{enumerate}
+
+\subsection{Research Results}
+
+The results of the research will be handled per question, firstly dealing with the sub-questions.
+The results are listed in this paragraph. The conclusions following this research, will be dealt with in the Conclusions chapter.
+
+\begin{enumerate}
+\item \textit{What are standard password formats?}\\
+  The first step to answering the sub-question ``\textit{What are standard password formats?}'', was to find useful data to process. For this reason, an online search pointed to the freely available data on Github, called SecLists. A link to this data can be found in the appendices (\ref{app:secl}). This data contains information about frequently used directory names, usernames, passwords and much more. In this research, only the usernames and passwords were relevant and the focus was towards passwords.\\
+
+  The passwords, found in SecLists, were processed with a Python script, which can be found in the appendices (\ref{app:pyprocc}). The script parsed the files placed in the dedicated directory and analysed the format, password length and used characters of each password in the files. 
+  
+\item \textit{What personal information is relevant for password guessing?}\\
+  
+\item \textit{How can the processing of the information be done efficiently, from a technical perspective?}\\
+  
+\item \textit{How can the program remain up to date with changing password practices?}\\
+  
+\end{enumerate}
+
+\section{Conclusions}
+
+\subsection{Further Development}
+
+\newpage
+\section{Appendices}
+
+\subsection{Appendix A: SecLists}
+\label{app:secl}
+
+SecLists is a collection of data which is freely available on \href{https://github.com/danielmiessler/SecLists/}{Github}. It contains passwords, usernames and much more interesting data which can be used to gain insight in the most used passwords, their formats, used characters and password lengths.
+
+\subsection{Appendix B: Python password format processor}
+\label{app:pyprocc}
+
+A Python 3 based script was written to simplify the processing of password data. The script was enabled to parse all data entered as files into a specific directory, splitting the task of processing each file into a separate child process (multiprocessing in Python). 
+
+\begin{lstlisting}[language=Python]
+  print('hello world')  
+\end{lstlisting}
+
+\subsection{Appendix C: Python graph plotter}
+\label{app:pyplot}
+
+To create a new overview for the processed data, a Python script was written to create plots of the data. The script is listed below.
+
+\begin{lstlisting}[language=Python]
+  print('hello world')  
+\end{lstlisting}
+
+\end{document}

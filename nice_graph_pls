@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+from colorama import Fore, Style
+import matplotlib.pyplot as plt
+
+try:
+    choice = sys.argv[1]
+except:
+    print(Fore.RED+'[ERROR]'+Style.RESET_ALL,
+          'Wrong number of parameters')
+    sys.exit(1)
+
+dir_output = 'processed'
+files = os.scandir(dir_output)
+fd_choice = ''
+
+for fd in files:
+    if choice in fd.name:
+        print(fd.name)
+        fd_choice = dir_output+'/'+fd.name
+        break
+
+if fd_choice == '':
+    print(Fore.RED+'[ERROR]'+Style.RESET_ALL,
+          'Something went wrong with the filename')
+    sys.exit(1)
+    
+x=[]
+y=[]
+    
+with open(fd_choice, 'r') as fd:
+    for line in fd:
+        line=line.split(' ')
+        x.append(line[0])
+        y.append(line[1])
+
+while len(x) > 100:
+    x=x[int(len(x)/4):]
+    y=y[int(len(y)/4):]
+
+plt.bar(x,y)
+plt.xlabel(choice)
+plt.ylabel('count')
+if len(x[0]) > 1:
+    plt.xticks(rotation=45)
+    if len(x[0]) > 2:
+        plt.xticks(rotation=90)
+           
+plt.show()
