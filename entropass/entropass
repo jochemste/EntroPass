@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+from pwd_gen import Pwd_gen
+from colorama import Fore, Style, Back
+import argparse
+import toml
+import sys
+
+RED = Fore.RED
+GREEN = Fore.GREEN
+RESET = Style.RESET_ALL
+
+class EntroPass():
+    """
+    """
+    config_fd = '../config/entropass_conf.toml'
+    passwords = []
+    pass_w_scores = []
+    
+    def __init__(self):
+        """
+        """
+        try:
+            self.config = toml.load(self.config_fd)
+            print(GREEN+'[*]'+RESET, 'Loaded configuration from',
+                  self.config_fd)
+        except Exception as e:
+            print(RED+'[!!!] ERROR:'+RESET, 'Could not load', self.config_fd,
+                  ':', e)
+            sys.exit(1)
+        parser = argparse.ArgumentParser(usage='')
+        parser.add_argument('-k', '--keywords', required=False)
+        args = parser.parse_args()
+        self.gen = Pwd_gen(self.config_fd)
+        self.words = self.config['words']['list']
+
+    def run(self):
+        """
+        """
+        self.run_permutations()
+
+        self.run_replace()
+
+        if self.config['print']['shell']:
+            self.print_passwords()
+
+        if self.config['print']['file']:
+            self.write_t_file()
+        
+        print(self.passwords)
+        print(self.get_count())
+
+    def run_permutations(self):
+        """
+        """
+        self.passwords.append(self.gen.word_perms(self.words, 2))
+
+    def run_replace(self):
+        """
+        """
+        new_psswds = []
+        for passwords in self.passwords:
+            for p in passwords:
+                print(p)
+                new_psswds += self.gen.rep_cmmn_chars(word=p)
+
+        self.passwords.append(new_psswds)
+
+    def get_count(self):
+        count = 0
+        for passwords in self.passwords:
+            count += len(passwords)
+
+        return count
+
+    def print_passwords(self):
+        """
+        """
+        for passwords in self.passwords:
+            print(', '.join(passwords))
+
+    def write_t_file(self):
+        """
+        """
+        with open(self.config['print']['fd'], 'w') as fd:
+            for passwords in self.passwords:
+                for p in passwords:
+                    fd.write(p+'\n')
+    
+if __name__=='__main__':
+    ep = EntroPass()
+    ep.run()

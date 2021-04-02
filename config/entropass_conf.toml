@@ -1,0 +1,86 @@
+# Information to prompt for and use in wordlist generation
+[information]
+name = '# First name: '
+surname = '# Surname: '
+bday = '# Birthdate (dd/mm/yyyy): '
+username = '# Username: '
+company = '# Company: '
+hobbies = '# Hobbies (hobby1/hobby2/...): '
+pets = '# Pets: '
+
+[words]
+list = [
+     'harry', 'potter', 'hogwarts', 'quidditch',
+     'hedwig'
+     ]
+
+[print]
+shell = true
+file = true
+fd = '../results/test.txt'
+sort = true
+sortby = 'DESC'
+
+[common-replacements] # Based on 1337 dictionary
+'a' = ['@', '4', '^', '/\\', '/-\\'] # = @, 4, ^, /\, /-\
+'b' = ['l3', '8', '3', 'l', 'ß']
+'c' = ['(', '<', '©', '¢']
+'d' = []
+'e' = ['3']
+'f' = []
+'g' = []
+'h' = []
+'i' = ['1', '!']
+'j' = []
+'k' = []
+'l' = ['!']
+'m' = []
+'n' = []
+'o' = ['0']
+'p' = []
+'q' = []
+'r' = []
+'s' = ['5', '$']
+'t' = []
+'u' = ['4']
+'v' = []
+'w' = []
+'x' = []
+'y' = []
+'z' = []
+'0' = ['O']
+'1' = ['!']
+'2' = []
+'3' = []
+'4' = []
+'5' = []
+'6' = []
+'7' = []
+'8' = []
+'9' = []
+'`' = []
+'~' = []
+'!' = []
+'@' = []
+'#' = []
+'$' = []
+'%' = []
+'^' = []
+'&' = []
+'*' = []
+'(' = []
+')' = []
+'-' = []
+'_' = []
+'=' = []
+'+' = []
+'<' = []
+'>' = []
+',' = []
+'.' = []
+'\\' = [] # (This is a single backslash)
+'|' = []
+'{' = []
+'[' = []
+'}' = []
+']' = []
