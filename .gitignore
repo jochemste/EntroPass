@@ -3,4 +3,5 @@
 *pycache*
 *.toc
 *.out
+*venv*
 results/*
