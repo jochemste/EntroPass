@@ -1,18 +1,9 @@
 # Information to prompt for and use in wordlist generation
-[information]
-name = '# First name: '
-surname = '# Surname: '
-bday = '# Birthdate (dd/mm/yyyy): '
-username = '# Username: '
-company = '# Company: '
-hobbies = '# Hobbies (hobby1/hobby2/...): '
-pets = '# Pets: '
-
 [words]
 list = [
-     'harry', 'potter', 'hogwarts', 'quidditch',
-     'hedwig'
-     ]
+       'harry', 'potter', 'hogwarts', 'quidditch',
+       'hedwig'
+       ]
 
 [print]
 shell = true
@@ -20,6 +11,16 @@ file = true
 fd = '../results/test.txt'
 sort = true
 sortby = 'DESC'
+
+[common-separators]
+list = [
+       '.', '-', '/', '*'
+       ]
+
+[common-end]
+list = [
+       '!', '?', '.'
+       ]
 
 [common-replacements] # Based on 1337 dictionary
 # Single backslashes are escape characters, which is why a double

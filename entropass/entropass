@@ -40,13 +40,15 @@ class EntroPass():
 
         self.run_replace()
 
+        self.__rm_duplicates()
+        
         if self.config['print']['shell']:
             self.print_passwords()
 
         if self.config['print']['file']:
             self.write_t_file()
         
-        print(self.passwords)
+        #print(self.passwords)
         print(self.get_count())
 
     def run_permutations(self):
@@ -60,31 +62,39 @@ class EntroPass():
         new_psswds = []
         for passwords in self.passwords:
             for p in passwords:
-                print(p)
+                #print(p)
                 new_psswds += self.gen.rep_cmmn_chars(word=p)
 
         self.passwords.append(new_psswds)
 
     def get_count(self):
-        count = 0
-        for passwords in self.passwords:
-            count += len(passwords)
+        """
+        """
+        count = len(self.passwords)
 
         return count
 
     def print_passwords(self):
         """
         """
-        for passwords in self.passwords:
-            print(', '.join(passwords))
+        print(', '.join(self.passwords))
 
     def write_t_file(self):
         """
         """
         with open(self.config['print']['fd'], 'w') as fd:
-            for passwords in self.passwords:
-                for p in passwords:
-                    fd.write(p+'\n')
+            for p in self.passwords:
+                fd.write(p+'\n')
+
+    def __rm_duplicates(self):
+        """
+        """
+        passwords = []
+        for ps in self.passwords:
+            passwords += ps
+        print(passwords)
+        passwords = list(dict.fromkeys(passwords))
+        self.passwords = passwords
     
 if __name__=='__main__':
     ep = EntroPass()
