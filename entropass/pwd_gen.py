@@ -25,7 +25,7 @@ class Pwd_gen():
                                             nr_in_result+1)
         return [''.join(p) for p in perms]+[''.join(p) for p in perms2]+[''.join(p) for p in perms3]
 
-    def rep_cmmn_chars(self, word: str, count=None, iterations=2):
+    def rep_cmmn_chars(self, word: str, count=None, iterations=4):
         """
         Iterations exponentially increase 
         """
