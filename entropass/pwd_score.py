@@ -1,11 +1,13 @@
+from string import ascii_lowercase
 import toml
-from threading import Thread
 
 class Pwd_score():
     form_fd = ''
     char_fd = ''
     forms = {}
     chars = {}
+    alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
+                'q','r','s','t','u','v','w','x','y','z']
 
     def __init__(self, config_fd):
         """
@@ -22,24 +24,8 @@ class Pwd_score():
         """
         self.score = 0.0
 
-        #t1 = Thread(target=self.__score_forms_thr, args=(pwd,))
-        #t2 = Thread(target=self.__score_chars_thr, args=(pwd,))
-
-        #t1.start()
-        #t2.start()
-
-        #t1.join()
-        #t2.join()
-
         self.__score_forms(pwd)
         self.__score_chars(pwd)
-        
-        #for form, occ in self.forms.items():
-        #    self.score += self.score_pwd_format(pwd=pwd, format_=form,
-        #                                   occurrences=occ)
-
-        #for char, occ in self.chars.items():
-        #    self.score += self.score_pwd_chars(pwd=pwd, char=char, occurrences=occ)
 
         score = self.score
         self.score = 0.0
@@ -58,14 +44,14 @@ class Pwd_score():
         for i in range(min(len(pwd), len(format_))):
             if pwd[i].isdigit() and (format_[i]=='d'):
                 score += char_weight
-            elif pwd[i].isalpha() and format_[i].lower()=='c':
+            elif self.isalphabet(pwd[i]) and format_[i].lower()=='c':
                 if pwd[i].isupper() and format_[i].isupper():
                     score += char_weight
                 elif not(pwd[i].isupper()) and not(format_[i].isupper()):
                     score += char_weight
                 else:
                     score += (char_weight/2.0)
-            elif not(pwd[i].isalpha() or pwd[i].isdigit()) \
+            elif not(self.isalphabet(pwd[i]) or pwd[i].isdigit()) \
                  and not(format_[i].lower()=='c' or format_[i]=='d'):
                 score += char_weight
 
@@ -108,6 +94,15 @@ class Pwd_score():
             for line in fd:
                 char, occ = line.split(' ')
                 self.chars[char] = int(occ)
+
+    def isalphabet(self, char):
+        """
+        """
+        if char.isalpha():
+            if char in set(ascii_lowercase):
+                return True
+
+        return False
 
 if __name__=='__main__':
     p = Pwd_score('../config/entropass_conf.toml')

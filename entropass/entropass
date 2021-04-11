@@ -19,6 +19,7 @@ class EntroPass():
     passwords = []
     scored_pwds = {}
     pass_w_scores = []
+    debug = False
     
     def __init__(self):
         """
@@ -30,9 +31,14 @@ class EntroPass():
             error('Could not load', self.config_fd,
                   ':', e)
             sys.exit(1)
-        parser = argparse.ArgumentParser(usage='')
-        parser.add_argument('-k', '--keywords', required=False)
+        parser = argparse.ArgumentParser()
+        #parser.add_argument('-k', '--keywords', required=False)
+        parser.add_argument('-d', '--debug', required=False, action='store_true')
         args = parser.parse_args()
+        
+        if args.debug:
+            self.debug = True
+        
         self.gen = Pwd_gen(self.config_fd)
         self.score_pwd = Pwd_score(self.config_fd)
         self.seed_words = [word.lower() for word in self.config['words']['list']]
@@ -40,14 +46,17 @@ class EntroPass():
     def run(self):
         """
         """
-        self.run_seeding_expanse()
-        self.run_permutations()
-
-        self.run_replace()
-
-        self.__rm_duplicates()
-        self.__score_pwds()
-        
+        try:
+            self.run_seeding_expanse()
+            self.run_permutations()
+            
+            self.run_replace()
+            
+            self.__rm_duplicates()
+            self.__score_pwds()
+        except KeyboardInterrupt:
+            warning('Interrupt received, trying to write results to file')
+            
         if self.config['print']['shell']:
             self.print_passwords()
             cprint('Generated', self.get_count(), 'passwords.')
@@ -122,6 +131,7 @@ class EntroPass():
             passwords += ps
         passwords = list(dict.fromkeys(passwords))
         self.passwords = passwords
+        cprint('Remaining:', len(self.passwords))
 
     def __score_pwds(self):
         """
@@ -138,21 +148,31 @@ class EntroPass():
                 self.sorted_pwds[password] = self.score_pwd.score_pwd(pwd=password)
                 ctr+=1
         except Exception as e:
-            print('Could not complete scoring?:', e)
+            error('Could not complete scoring:', e)
 
         self.passwords = []
         print()
         cprint('Sorting passwords')
+
         self.sorted_pwds = self.__sort_scored(self.sorted_pwds)
 
-        for pwd, score in self.sorted_pwds:
-            self.passwords.append(pwd)
+        try:
+            for pwd, score in self.sorted_pwds.items():
+                self.passwords.append(pwd)
+        except Exception as e:
+            error('Could not append sorted scored passwords to list:', e)
+            sys.exit(1)
 
     def __sort_scored(self, scored):
         """
         """
-        srtd = {key: value for  key, value in sorted(scored.items(), key=lambda item: item[1])}
-        return srtd
+        try:
+            srtd = {key: value for  key, value in sorted(scored.items(), key=lambda item: item[1],
+                                                         reverse=True)}
+            return srtd
+        except Exception as e:
+            error('Could not sort scored passwords:', e)
+            sys.exit(1)
     
 if __name__=='__main__':
     ep = EntroPass()
