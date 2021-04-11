@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from pwd_gen import Pwd_gen
+from pwd_score import Pwd_score
 from print_utils import *
 from colorama import Fore, Style, Back
+from threading import Thread
 import argparse
 import toml
 import sys
@@ -15,6 +17,7 @@ class EntroPass():
     """
     config_fd = '../config/entropass_conf.toml'
     passwords = []
+    scored_pwds = {}
     pass_w_scores = []
     
     def __init__(self):
@@ -31,6 +34,7 @@ class EntroPass():
         parser.add_argument('-k', '--keywords', required=False)
         args = parser.parse_args()
         self.gen = Pwd_gen(self.config_fd)
+        self.score_pwd = Pwd_score(self.config_fd)
         self.seed_words = [word.lower() for word in self.config['words']['list']]
 
     def run(self):
@@ -42,6 +46,7 @@ class EntroPass():
         self.run_replace()
 
         self.__rm_duplicates()
+        self.__score_pwds()
         
         if self.config['print']['shell']:
             self.print_passwords()
@@ -57,25 +62,36 @@ class EntroPass():
         """
         self.passwords.append(self.seed_words)
 
+        length = len(self.seed_words)
+        ctr = length
         for w in self.seed_words:
             res = self.gen.upper_perms(word=w)
             self.passwords.append(res)
+            cprint('Expanding seed words: ', length, '->', ctr, end='\r')
+            ctr += len(res)
+        print()
         
     def run_permutations(self):
         """
         """
+        cprint('Generating permutations')
         self.passwords.append(self.gen.word_perms(words=self.seed_words,
                                                   nr_in_result=2))
 
     def run_replace(self):
         """
         """
+        cprint('Replacing characters')
         new_psswds = []
+        ctr = 0
         for passwords in self.passwords:
             for p in passwords:
                 new_psswds += self.gen.rep_cmmn_chars(word=p,
                                                       iterations=4)
+                cprint('Resulting passwords:', ctr, end='\r')
+                ctr = len(new_psswds)
 
+        print()
         self.passwords.append(new_psswds)
 
     def get_count(self):
@@ -100,11 +116,43 @@ class EntroPass():
     def __rm_duplicates(self):
         """
         """
+        cprint('Removing duplicates')
         passwords = []
         for ps in self.passwords:
             passwords += ps
         passwords = list(dict.fromkeys(passwords))
         self.passwords = passwords
+
+    def __score_pwds(self):
+        """
+        """
+        self.sorted_pwds = {}
+        length = len(self.passwords)
+        ctr = 1
+        try:
+            for password in self.passwords:
+                if not(type(password) == str):
+                    raise ValueError('Could not score passwords, passwords need to be '+\
+                                     'of type str:'+str(password))
+                cprint('Scoring password', ctr, 'of', length, end='\r')
+                self.sorted_pwds[password] = self.score_pwd.score_pwd(pwd=password)
+                ctr+=1
+        except Exception as e:
+            print('Could not complete scoring?:', e)
+
+        self.passwords = []
+        print()
+        cprint('Sorting passwords')
+        self.sorted_pwds = self.__sort_scored(self.sorted_pwds)
+
+        for pwd, score in self.sorted_pwds:
+            self.passwords.append(pwd)
+
+    def __sort_scored(self, scored):
+        """
+        """
+        srtd = {key: value for  key, value in sorted(scored.items(), key=lambda item: item[1])}
+        return srtd
     
 if __name__=='__main__':
     ep = EntroPass()
