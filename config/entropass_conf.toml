@@ -6,7 +6,7 @@ list = [
        ]
 
 [print]
-shell = true
+shell = false
 file = true
 fd = '../results/test.txt'
 sort = true
