@@ -173,6 +173,13 @@ class EntroPass():
         except Exception as e:
             error('Could not sort scored passwords:', e)
             sys.exit(1)
+
+    def __limit_words(self):
+        if self.config['results']['max_results']:
+            cprint('Reducing number of passwords to write into file from', len(passwords),
+                   'to', self.config['results']['max_results'])
+            self.passwords = self.passwords[:self.config['results']['max_results']]
+            print(len(self.passwords))
     
 if __name__=='__main__':
     ep = EntroPass()

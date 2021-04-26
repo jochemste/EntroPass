@@ -5,6 +5,9 @@ list = [
        'hedwig'
        ]
 
+[results]
+max_words = 0 # use 0 for no maximum. Any other number will write the top scoring words into a file.
+
 [print]
 shell = false
 file = true
