@@ -7,6 +7,7 @@ from threading import Thread
 import argparse
 import toml
 import sys
+import os
 
 RED = Fore.RED
 GREEN = Fore.GREEN
@@ -61,6 +62,9 @@ class EntroPass():
             self.print_passwords()
             cprint('Generated', self.get_count(), 'passwords.')
 
+        if self.config['results']['max_words']:
+            self.__limit_words()
+            
         if self.config['print']['file']:
             self.write_t_file()
             cprint('Wrote', self.get_count(), 'passwords to', self.config['print']['fd'])
@@ -118,7 +122,9 @@ class EntroPass():
     def write_t_file(self):
         """
         """
-        with open(self.config['print']['fd'], 'w') as fd:
+        dir = self.config['print']['dir']
+        os.makedirs(dir, exist_ok=True)
+        with open(dir+self.config['print']['fd'], 'w') as fd:
             for p in self.passwords:
                 fd.write(p+'\n')
 
@@ -175,11 +181,9 @@ class EntroPass():
             sys.exit(1)
 
     def __limit_words(self):
-        if self.config['results']['max_results']:
-            cprint('Reducing number of passwords to write into file from', len(passwords),
-                   'to', self.config['results']['max_results'])
-            self.passwords = self.passwords[:self.config['results']['max_results']]
-            print(len(self.passwords))
+        cprint('Reducing number of passwords to write into file from', len(self.passwords),
+               'to', self.config['results']['max_words'])
+        self.passwords = self.passwords[:self.config['results']['max_words']]
     
 if __name__=='__main__':
     ep = EntroPass()

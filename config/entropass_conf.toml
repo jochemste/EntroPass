@@ -1,17 +1,19 @@
 # Information to prompt for and use in wordlist generation
 [words]
 list = [
-       'harry', 'potter', 'hogwarts', 'quidditch',
-       'hedwig'
+       'harry'
        ]
 
 [results]
-max_words = 0 # use 0 for no maximum. Any other number will write the top scoring words into a file.
+max_words = 5000 # use 0 for no maximum. Any other number will write the top scoring words into a file.
+compare = true
+compare_pwd = ''
 
 [print]
 shell = false
 file = true
-fd = '../results/test_sort.txt'
+dir = '../results/'
+fd = 'test_sort.txt'
 sort = true
 sortby = 'DESC'
 
