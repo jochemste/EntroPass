@@ -108,7 +108,7 @@ class EntroPass():
         for passwords in self.passwords:
             for p in passwords:
                 new_psswds += self.gen.rep_cmmn_chars(word=p,
-                                                      iterations=4)
+                                                      iterations=6)
                 cprint('Resulting passwords:', ctr, end='\r')
                 ctr = len(new_psswds)
 
@@ -196,7 +196,7 @@ class EntroPass():
     def __limit_words(self):
         cprint('Reducing number of passwords to write into file from', len(self.passwords),
                'to', self.config['results']['max_words'])
-        self.passwords = self.passwords[:self.config['results']['max_words']]
+        self.passwords = self.passwords[:min(self.config['results']['max_words'], len(self.passwords))]
 
     def __search_for_pwd(self):
         run_as_str = False

@@ -15,6 +15,10 @@ fd = 'test_sort.txt'
 sort = true
 sortby = 'DESC'
 
+[patterns]
+names = '../names/names.txt'
+birthdate = '(.*)\d+(\.|\/|\-|\_)\d+(\.|\/|\-|\_)\d+(.*)'
+
 # Data that has been pre-processed into formats, chars, etc.
 [processed-data]
 dir = '../processed/'

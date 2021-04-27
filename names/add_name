@@ -6,7 +6,7 @@ import os
 if len(sys.argv)<2:
     sys.exit(1)
 
-new_names = sys.argv[1:]
+new_names = [n.lower() for n in sys.argv[1:]]
     
 fname = 'names.txt'
     
