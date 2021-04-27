@@ -6,8 +6,6 @@ list = [
 
 [results]
 max_words = 5000 # use 0 for no maximum. Any other number will write the top scoring words into a file.
-compare = true
-compare_pwd = ''
 
 [print]
 shell = false
@@ -30,7 +28,7 @@ list = [
 
 [common-end]
 list = [
-       '!', '?', '.'
+       '!', '?', '.', '123', '12345'
        ]
 
 [common-replacements] # Based on 1337 dictionary

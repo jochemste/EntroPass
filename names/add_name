@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+
+if len(sys.argv)<2:
+    sys.exit(1)
+
+new_names = sys.argv[1:]
+    
+fname = 'names.txt'
+    
+with open(fname, 'r') as fd:
+    names = []
+    for name in fd.readlines():
+        names.append(name.lower())
+
+    for new_name in new_names:
+        if new_name+'\n' in names:
+            print('Name:', new_name, 'already in file. Skipping...')
+        else:
+            print('Adding:', new_name)
+            names.append(new_name+'\n')
+
+with open(fname, 'w') as fd:
+    for name in names:
+        fd.write(name)
+    

@@ -21,6 +21,7 @@ class EntroPass():
     scored_pwds = {}
     pass_w_scores = []
     debug = False
+    comp_pwd = None
     
     def __init__(self):
         """
@@ -35,11 +36,14 @@ class EntroPass():
         parser = argparse.ArgumentParser()
         #parser.add_argument('-k', '--keywords', required=False)
         parser.add_argument('-d', '--debug', required=False, action='store_true')
+        parser.add_argument('-c', '--compare', required=False, help='Compare password to results')
         args = parser.parse_args()
         
         if args.debug:
             self.debug = True
-        
+            
+        self.comp_pwd = args.compare
+            
         self.gen = Pwd_gen(self.config_fd)
         self.score_pwd = Pwd_score(self.config_fd)
         self.seed_words = [word.lower() for word in self.config['words']['list']]
@@ -48,12 +52,17 @@ class EntroPass():
         """
         """
         try:
+
             self.run_seeding_expanse()
+
             self.run_permutations()
             
             self.run_replace()
-            
+                
             self.__rm_duplicates()
+            if self.comp_pwd:
+                self.__search_for_pwd()
+
             self.__score_pwds()
         except KeyboardInterrupt:
             warning('Interrupt received, trying to write results to file')
@@ -68,7 +77,6 @@ class EntroPass():
         if self.config['print']['file']:
             self.write_t_file()
             cprint('Wrote', self.get_count(), 'passwords to', self.config['print']['fd'])
-        
 
     def run_seeding_expanse(self):
         """
@@ -169,6 +177,11 @@ class EntroPass():
             error('Could not append sorted scored passwords to list:', e)
             sys.exit(1)
 
+        if self.comp_pwd and self.comp_pwd in self.passwords:
+            for i in range(len(self.passwords)):
+                if self.passwords[i]==self.comp_pwd:
+                    warning('Password is #'+str(i), 'in the scored list.')
+
     def __sort_scored(self, scored):
         """
         """
@@ -184,7 +197,20 @@ class EntroPass():
         cprint('Reducing number of passwords to write into file from', len(self.passwords),
                'to', self.config['results']['max_words'])
         self.passwords = self.passwords[:self.config['results']['max_words']]
-    
+
+    def __search_for_pwd(self):
+        run_as_str = False
+        for pwd in self.passwords:
+            if type(pwd) == str:
+                run_as_str = True
+                break
+            elif self.comp_pwd in pwd:
+                warning('Found the password in list of', sum([len(p) for p in self.passwords]), 'passwords')
+                return
+
+        if run_as_str and self.comp_pwd in self.passwords:
+            warning('Found the password in list of', len(self.passwords), 'passwords')
+        
 if __name__=='__main__':
     ep = EntroPass()
     ep.run()
