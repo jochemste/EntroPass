@@ -15,8 +15,10 @@ fd = 'test_sort.txt'
 sort = true
 sortby = 'DESC'
 
-[patterns]
+[info]
 names = '../names/names.txt'
+
+[patterns]
 birthdate = '(.*)\d+(\.|\/|\-|\_)\d+(\.|\/|\-|\_)\d+(.*)'
 
 # Data that has been pre-processed into formats, chars, etc.

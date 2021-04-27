@@ -79,27 +79,29 @@ class Pwd_gen():
                 else:
                     res.append(word.replace(cmmn_char, char, count))
 
+        res = list(dict.fromkeys(res)) # remove duplicates
+
         new_res_ph = []
         if iterations <= 1:
             iterations = 0
         else:
             iterations -= 1
-            
+
         for i in range(iterations):
             new_res = []
             for cmmn_char in self.config['common-replacements']:
                 for char in self.config['common-replacements'][cmmn_char]:
                     if not(count):
-                        for i in range(len(res)):
-                            new_res.append(res[i].replace(cmmn_char, char))
+                        for j in range(len(res)):
+                            new_res.append(res[j].replace(cmmn_char, char))
                     else:
-                        for i in range(len(res)):
-                            new_res.append(res[i].replace(cmmn_char, char,
+                        for j in range(len(res)):
+                            new_res.append(res[j].replace(cmmn_char, char,
                                                           count))
             new_res_ph += new_res
             
         res += new_res_ph
-        res = list(dict.fromkeys(res))
+        res = list(dict.fromkeys(res)) # remove duplicates
         return res
 
     def __single_c_upper(self, word):

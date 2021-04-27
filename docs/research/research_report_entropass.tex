@@ -108,7 +108,7 @@
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-
+\label{ch:intro}
 This research report has been created for the Hogeschool van Arnhem en Nijmegen as part of the Bachelor Flexible Project of Jochem Stevense and investigates the possibilities of developing a tool to efficiently guess for passwords, targeting a single specific person. The purpose of such a tool is to show users the vulnerabilities introduced by using memorable passwords and to generate wordlists to be used for ethical hacking and penetration testing purposes.\\
 
 Wordlists are used by threat actors to perform dictionary attacks on services that require authentication, parsing through a list of words and trying to login, using these words as passwords. The same can be done with usernames, although usernames are generally easier to discover, depending on the service to authenticate to.\\
@@ -135,6 +135,21 @@ This research will consist of a combination of qualitative and quantitative rese
 Ma, Campbell Tran and Kleeman \cite{bib:entro} mention that password entropy, used to indicate password strength, is loosely defined and mention that the calculation of this entropy is an inadequate indicator to password strength. Password strength is not only defined by the used character library and length, but is also relative to the attacker. Entropy calculations might indicate a password to be very strong, even though the actual entropy is effectively very low if an attacker has accurate ideas on what this password might be.
 
 \subsection{Methodology}
+The methodology deals with the methods, used to answer the sub-questions and the main question, formulated in chapter \ref{ch:intro}. Firstly, the sub-questions will be handled, after which the main research question will be dealt with.
+
+\begin{itemize}
+\item \textit{What are standard password formats?}\\
+  To answer this question, a desk research will be conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats will be sorted in a list of most used to least used. The passwords will also be analysed for most used characters. This will be done automatically by using a Python script, which will be written specifically for the use of this research. The script will be made available for interested parties with the final project.
+  
+\item \textit{What personal information is relevant for password guessing?}\\
+  Passwords are often based on personal information to make them easier to memorise. This personal information should be mapped to categories, to determine what a person is most likely to use for a memorable password. This will be done by desk research. This desk research will involve the use of the earlier mentioned word-lists from data breaches and analysing these manually to determine what categories are popular amongst users. Categories might involve aspects like, relationships, date of birth, pet names, etc.
+  
+\item \textit{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
+  To be able to answer this question, 
+
+\item \textit{How can the program remain up to date with changing password practices?}
+  This question will be answered by looking into sources of information for password practices, after which possibilities will be researched for gathering this information and analysing it in an automatised way.
+\end{itemize}
 
 \subsection{Results}
 

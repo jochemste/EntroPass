@@ -108,7 +108,7 @@ class EntroPass():
         for passwords in self.passwords:
             for p in passwords:
                 new_psswds += self.gen.rep_cmmn_chars(word=p,
-                                                      iterations=6)
+                                                      iterations=4)
                 cprint('Resulting passwords:', ctr, end='\r')
                 ctr = len(new_psswds)
 
