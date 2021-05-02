@@ -7,7 +7,7 @@
 \usepackage{listings, lstautogobble}
 \usepackage{tikz}
 \usepackage{graphicx}
-%\graphicspath{ {./images/} }
+\graphicspath{ {./images/} }
 \usepackage{xcolor}
 \usepackage{array}
 \usepackage{hyperref}
@@ -132,26 +132,80 @@ This research will consist of a combination of qualitative and quantitative rese
 \section{Research}
 
 \subsection{Theoretical Framework}
-Ma, Campbell Tran and Kleeman \cite{bib:entro} mention that password entropy, used to indicate password strength, is loosely defined and mention that the calculation of this entropy is an inadequate indicator to password strength. Password strength is not only defined by the used character library and length, but is also relative to the attacker. Entropy calculations might indicate a password to be very strong, even though the actual entropy is effectively very low if an attacker has accurate ideas on what this password might be.
+Ma, Campbell Tran and Kleeman \cite{bib:entro} mention that password entropy, used to indicate password strength, is loosely defined and mention that the calculation of this entropy is an inadequate indicator to password strength. Password strength is not only defined by the used character library and length, but is also relative to the attacker. Entropy calculations might indicate a password to be very strong, even though the actual entropy is effectively very low if an attacker has accurate ideas on what this password might be.\\
+
+Chou, Lee, Yu, Lai, Huang and Hsueh \cite{bib:pform} define password formats to have certain lengths, a combination of characters, and a pattern in the order of the characters and have proven so with the help of machine learning tools to learn these patterns and reproduce passwords using these patterns. This information allows for a clear direction for the analysing of password formats.
 
 \subsection{Methodology}
 The methodology deals with the methods, used to answer the sub-questions and the main question, formulated in chapter \ref{ch:intro}. Firstly, the sub-questions will be handled, after which the main research question will be dealt with.
 
 \begin{itemize}
 \item \textit{What are standard password formats?}\\
-  To answer this question, a desk research will be conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats will be sorted in a list of most used to least used. The passwords will also be analysed for most used characters. This will be done automatically by using a Python script, which will be written specifically for the use of this research. The script will be made available for interested parties with the final project.
+  To answer this question, desk research will be conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats will be sorted in a list of most used to least used. The passwords will also be analysed for most used characters. This will be done automatically by using a Python script, which will be written specifically for the use of this research. The script will be made available for interested parties with the final project.
   
 \item \textit{What personal information is relevant for password guessing?}\\
   Passwords are often based on personal information to make them easier to memorise. This personal information should be mapped to categories, to determine what a person is most likely to use for a memorable password. This will be done by desk research. This desk research will involve the use of the earlier mentioned word-lists from data breaches and analysing these manually to determine what categories are popular amongst users. Categories might involve aspects like, relationships, date of birth, pet names, etc.
   
 \item \textit{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
-  To be able to answer this question, 
+  To be able to answer this question, field research will be conducted to test different structures and determine which is most efficient in terms of finding the password as fast as possible. Several test scripts will be used to determine which structure is most efficient for a dictionary attack.
 
 \item \textit{How can the program remain up to date with changing password practices?}
-  This question will be answered by looking into sources of information for password practices, after which possibilities will be researched for gathering this information and analysing it in an automatised way.
+  This question will be answered by looking into sources of information for password practices, after which possibilities will be researched for gathering this information and analysing it in an automated way.
 \end{itemize}
 
 \subsection{Results}
+
+The results of the research will be handled per question, firstly dealing with the sub-questions. The results are listed in this paragraph. The conclusions from these results will be dealt with in the Conclusions chapter.
+
+\subsubsection{What are standard password formats?}
+
+To be able to determine patterns in passwords, password formats have been researched. The formats have been defined as the combination of password length, used characters (differentiating between lower case alphabetical, higher case alphabetical, digits and special characters) and the positions of the used characters. To determine the most used password formats, several password files from Daniel Miessler's Seclists \cite{bib:seclists} have been used for analysis, with the help of custom Python scripts. These password files have been the results of disclosed data-breaches and are/were real passwords. The total number of used passwords is 37,045 (thirty seven thousand forty five), and the used files are listed in the Appendices \ref{app:pwordfile}. The total number of characters in the combined files is 294,028.\\
+
+Figure \ref{fig:pform} shows the results of the password analysis, with the X-axis being populated with the discovered password formats, and the Y-axis indicating the number of times these formats have been found. The password formats contain a combination of $d$, $c$, $C$ and $s$. These character have the following meaning:
+\begin{itemize}
+\item $d=$Digit ($1,2,3,4,...$)
+\item $c=$Lower-case Alphabetical character ($a,b,c,d,e,...$)
+\item $C=$Higher-case Alphabetical character ($A,B,C,D,E,...$)
+\item $s=$Special character ($',/,?,!,...$)
+\end{itemize}
+
+\begin{figure}[!ht]
+  \centering
+  \hspace*{-5.4cm}
+  \includegraphics[width=1.8\textwidth]{password_formats}
+  \caption{Password Format}
+  \label{fig:pform}
+\end{figure}
+
+Notable from figure \ref{fig:pform} is that the top four (right most) password formats all consist of lower-case characters and the top seven consist of only one type of character, being lower-case alphabetical characters or digits. Looking further towards the left of the X-axis, this trend mostly holds, with only few combinations with at most two of the four types of characters. Overall, the lower-case alphabetical characters seem most popular, followed by digits.\\
+
+Further analysis of the passwords can be seen in figure \ref{fig:pchar}. This graph confirms the statement that lower-case alphabetical characters are most popular, followed by digits. Only about halfway on the X-axis do more upper-case alphabetical characters and special characters appear, having at most about 1,200 occurrences in about 294,028 characters.
+
+\begin{figure}[!ht]
+  \centering
+  \hspace*{-5.4cm}
+  \includegraphics[width=1.8\textwidth]{password_chars}
+  \caption{Character Usage}
+  \label{fig:pchar}
+\end{figure}
+
+Focusing more on the length of the passwords, figure \ref{fig:plen} shows the most used password lengths. Perhaps unsurprisingly, the most used length of six is far from being the longest in the graph. Furthermore, the six most occurring lengths are all under 10, with 10 being the seventh most occurring.
+
+\begin{figure}[!ht]
+  \centering
+  \hspace*{-5.4cm}
+  \includegraphics[width=1.8\textwidth]{password_length}
+  \caption{Password Length}
+  \label{fig:plen}
+\end{figure}
+
+\newpage
+\subsubsection{What personal information is relevant for password guessing?}
+
+\subsubsection{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
+
+\subsubsection{How can the program remain up to date with changing password practices?}
+
 
 \subsection{Sub-Conclusions}
 
@@ -168,7 +222,51 @@ The methodology deals with the methods, used to answer the sub-questions and the
 \begin{thebibliography}{9}
 \bibitem{bib:entro}
    Wanli Ma, John Campbell, Dat Tran, Dale Kleeman, Password Entropy and Password Quality, 2010, University of Canberra, Australia \texttt{https://ieeexplore.ieee.org/abstract/document/5635948}
+ \bibitem{bib:pform}
+   Hsien-Cheng Chou, Hung-Chang Lee, Hwan-Jeu Yu, Fei-Pei Lai, Kuo-Hsuan Huang, Chih-Wen Hsueh, Password Cracking Based On Learned Patterns From Disclosed Passwords, National Taiwan University, New Tapei City, Taiwan \texttt{http://www.ijicic.org/ijicic-11-12068.pdf}
+ \bibitem{bib:seclists}
+   Daniel Miessler, San Francisco, California, U.S.A \texttt{https://github.com/danielmiessler/SecLists/}
 \end{thebibliography}
+
+\newpage
+\section{Appendices}
+
+\subsection{Appendix A: SecLists}
+\label{app:secl}
+
+SecLists is a collection of data which is freely available on \href{https://github.com/danielmiessler/SecLists/}{Github}. It contains passwords, usernames and much more interesting data which can be used to gain insight in the most used passwords, their formats, used characters and password lengths.
+
+\subsection{Appendix B: Python password format processor}
+\label{app:pyprocc}
+
+A Python 3 based script was written to simplify the processing of password data. The script was enabled to parse all data entered as files into a specific directory, splitting the task of processing each file into a separate child process (multiprocessing in Python). 
+
+\begin{lstlisting}[language=Python]
+  print('hello world')  
+\end{lstlisting}
+
+\subsection{Appendix C: Python graph plotter}
+\label{app:pyplot}
+
+To create a new overview for the processed data, a Python script was written to create plots of the data. The script is listed below.
+
+\begin{lstlisting}[language=Python]
+  print('hello world')  
+\end{lstlisting}
+
+\subsection{Appendix D: Used Password File Names}
+\label{app:pwordfile}
+
+\begin{itemize}
+\item 10k-most-common.txt
+\item probable-v2-top12000.txt
+\item unkown-azul.txt
+\item clarkson-university-82.txt
+\item stupid-ones-in-production.txt
+\item darkweb2017-top10000.txt
+\item twitter-banned.txt
+\end{itemize}
+
 
 \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -262,5 +360,18 @@ To create a new overview for the processed data, a Python script was written to 
 \begin{lstlisting}[language=Python]
   print('hello world')  
 \end{lstlisting}
+
+\subsection{Appendix D: Used Password File Names}
+\label{app:pwordfile}
+
+\begin{itemize}
+\item 10k-most-common.txt
+\item probable-v2-top12000.txt
+\item unkown-azul.txt
+\item clarkson-university-82.txt
+\item stupid-ones-in-production.txt
+\item darkweb2017-top10000.txt
+\item twitter-banned.txt
+\end{itemize}
 
 \end{document}
