@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import sys
+import os
+from colorama import Fore, Style
+import matplotlib.pyplot as plt
+
+pfile = 'passwords/10k-most-common.txt'
+passwords = []
+
+with open(pfile, 'r') as fd:
+    lines = fd.readlines()
+    for line in lines:
+        passwords.append(line.split('\n')[0])
+
+categories = {
+}
+
+try:
+    for password in passwords:
+        print(password)
+        index=0
+        existing = ''
+        for key, value in categories.items():
+            existing += ', '+key+'<'+str(index)+'>'
+            index += 1
+        print('Existing categories:', existing)
+        choice = input('Choose category for '+Fore.GREEN+password+Style.RESET_ALL+': ')
+        if choice.isdigit():
+            print(choice)
+            if len(list(categories)) > int(choice):
+                key = list(categories)[int(choice)]
+                print(key)
+            else:
+                print('Does not exist yet. Skipping...')
+        else:
+            key = choice
+        if key in categories:
+            categories[key] += 1
+        else:
+            categories[key] = 1
+except KeyboardInterrupt:
+    print('Making graph')
+
+x = [key for key, value in categories.items()]
+y = [value for key, value in categories.items()]
+
+plt.bar(x,y)
+plt.xlabel('Categories')
+plt.ylabel('count')
+plt.xticks(rotation=45)
+           
+plt.show()
+
+
+
+

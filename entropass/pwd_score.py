@@ -2,12 +2,12 @@ from string import ascii_lowercase
 import toml
 import re
 class Pwd_score():
+    """
+    """
     form_fd = ''
     char_fd = ''
     forms = {}
     chars = {}
-    #alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p',
-    #            'q','r','s','t','u','v','w','x','y','z']
 
     def __init__(self, config_fd):
         """
@@ -16,10 +16,12 @@ class Pwd_score():
         dir = self.config['processed-data']['dir']
         self.form_fd = dir+self.config['processed-data']['format']
         self.char_fd = dir+self.config['processed-data']['char']
-        self.name_fd = self.config['info']['names']
+        self.name_fd = self.config['categories']['names']
+        self.foods_fd = self.config['categories']['foods']
         self.__parse_formats()
         self.__parse_chars()
         self.__parse_names()
+        self.__parse_foods()
         
     def score_pwd(self, pwd):
         """
@@ -28,14 +30,15 @@ class Pwd_score():
 
         self.__score_forms(pwd)
         self.__score_chars(pwd)
-        self.__score_pwd_info(pwd)
+        self.__score_pwd_cat(pwd)
+        s = self.score
         self.__score_patterns(pwd)
 
         score = self.score
         self.score = 0.0
         return score
 
-    def score_pwd_format(self, pwd, format_, occurrences, format_weight=1.0):
+    def score_pwd_format(self, pwd, format_, occurrences, format_weight=100.0):
         """
         """
         score = 0.0
@@ -74,7 +77,7 @@ class Pwd_score():
 
         return round(score*(occurrences*chars_weight))
 
-    def score_pwd_name(self, pwd, name, name_weight=100.0):
+    def score_pwd_name(self, pwd, name, name_weight=10000.0):
         """
         """
         score = 0.0
@@ -96,7 +99,7 @@ class Pwd_score():
             score += weight
         return round(score*patt_weight)
     
-    def __score_pwd_info(self, pwd):
+    def __score_pwd_cat(self, pwd):
         for name in self.names:
             self.score += self.score_pwd_name(pwd=pwd, name=name)
 
@@ -136,7 +139,17 @@ class Pwd_score():
         self.names = []
         with open(self.name_fd, 'r') as fd:
             for name in fd:
+                name = name.split('\n')[0]
                 self.names.append(name)
+
+    def __parse_foods(self):
+        """
+        """
+        self.foods = []
+        with open(self.foods_fd, 'r') as fd:
+            for food in fd:
+                food = food.split('\n')[0]
+                self.foods.append(food)
 
     def isalphabet(self, char):
         """
