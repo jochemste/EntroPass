@@ -1,4 +1,5 @@
 
+from string import ascii_lowercase
 import itertools
 import toml
 from threading import Thread
@@ -11,6 +12,13 @@ class Pwd_gen():
         Load specified configuration file
         """
         self.config = toml.load(config_fd)
+        if self.config['generating-rules']['use-patterns']:
+            self.patterns = self.config['generating-rules']['patterns']
+        elif self.config['generating-rules']['use-top-patterns']:
+            self.patterns = self.__get_top_x_patterns(x=self.config['generating-rules']['top-patterns'])
+        else:
+            self.patterns = False
+            
 
     def upper_perms(self, word):
         """
@@ -58,6 +66,7 @@ class Pwd_gen():
         results = [''.join(p) for p in perms]+[''.join(p) for p in perms2]+\
             [''.join(p) for p in perms3]
         results = list(dict.fromkeys(results))
+        self.result = []
         return results
 
     def rep_cmmn_chars(self, word: str, count=None, iterations=4):
@@ -70,39 +79,56 @@ class Pwd_gen():
         iterations can provide the same nr of results as 100. However, this will make a 
         significant difference in the processing time.
         """
-        res = [word]
+        results = [word]
 
         for cmmn_char in self.config['common-replacements']:
             for char in self.config['common-replacements'][cmmn_char]:
                 if not(count):
-                    res.append(word.replace(cmmn_char, char))
+                    results.append(word.replace(cmmn_char, char))
                 else:
-                    res.append(word.replace(cmmn_char, char, count))
+                    results.append(word.replace(cmmn_char, char, count))
 
-        res = list(dict.fromkeys(res)) # remove duplicates
+        results = list(dict.fromkeys(results)) # remove duplicates
 
-        new_res_ph = []
+        new_results_ph = []
         if iterations <= 1:
             iterations = 0
         else:
             iterations -= 1
 
         for i in range(iterations):
-            new_res = []
+            new_results = []
             for cmmn_char in self.config['common-replacements']:
                 for char in self.config['common-replacements'][cmmn_char]:
                     if not(count):
-                        for j in range(len(res)):
-                            new_res.append(res[j].replace(cmmn_char, char))
+                        for j in range(len(results)):
+                            new_results.append(results[j].replace(cmmn_char, char))
                     else:
-                        for j in range(len(res)):
-                            new_res.append(res[j].replace(cmmn_char, char,
+                        for j in range(len(results)):
+                            new_results.append(results[j].replace(cmmn_char, char,
                                                           count))
-            new_res_ph += new_res
+            new_results_ph += new_results
             
-        res += new_res_ph
-        res = list(dict.fromkeys(res)) # remove duplicates
-        return res
+        results += new_results_ph
+        results = list(dict.fromkeys(results)) # remove duplicates
+        self.result = []
+        return results
+
+    def filter(self, results):
+        """
+        """
+        ctr=0
+        if self.patterns:
+            temp_results = results[:]
+            results = []
+            for res in temp_results:
+                ctr += 1
+                for pattern in self.patterns:
+                    if self.__check_if_pattern_match(word=res, pattern=pattern):
+                        results.append(res)
+
+            results = list(dict.fromkeys(results))
+        return results
 
     def __single_c_upper(self, word):
         for i in range(len(word)): # Single Upper chars
@@ -119,9 +145,49 @@ class Pwd_gen():
         for i in range(0, len(upper_w)): #Upper chars, decrementing from left
             new_word = upper_w[:i].lower() + upper_w[i:]
             self.results.append(new_word)
-    
+
+    def __check_if_pattern_match(self, word, pattern):
+        """
+        """
+        if not(len(word) == len(pattern)):
+            return False
+        
+        for i in range(len(word)):
+            c = ''
+            if word[i].isdigit():
+                c='d'
+            elif word[i].isalpha and word[i] in ascii_lowercase:
+                if word[i].isupper():
+                    c='C'
+                else:
+                    c='c'
+            else:
+                c='s'
+
+            if not(c == pattern[i]):
+                return False
+                    
+        return True
+
+    def __get_top_x_patterns(self, x):
+        """
+        """
+        file_ = self.config['processed-data']['dir']+self.config['processed-data']['format']
+        patterns = []
+
+        with open(file_, 'r') as fd:
+            lines = fd.readlines()[-x:]
+            for line in lines:
+                form, occ = line.split(' ')
+
+                patterns.append(form)
+
+        return patterns
+            
 if __name__=='__main__':
     pwd_gen = Pwd_gen('../config/entropass_conf.toml')    
     #print(pwd_gen.word_perms(['harry', 'potter', 'quiditch', 'hedwig'], 2))
-    print(pwd_gen.upper_perms('test'))
+    #print(pwd_gen.upper_perms('test'))
 
+    list_ = ['johann', 'johan']
+    print(pwd_gen.filter(list_))

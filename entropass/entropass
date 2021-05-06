@@ -60,6 +60,7 @@ class EntroPass():
             self.run_replace()
                 
             self.__rm_duplicates()
+            self.run_filter()
             if self.comp_pwd:
                 self.__search_for_pwd()
 
@@ -114,6 +115,13 @@ class EntroPass():
 
         print()
         self.passwords.append(new_psswds)
+
+    def run_filter(self):
+        """
+        """
+        cprint('Filtering passwords with patterns:', len(self.passwords), '...')
+        self.passwords = self.gen.filter(self.passwords)
+        cprint('Filtered passwords with patterns:', len(self.passwords))
 
     def get_count(self):
         """

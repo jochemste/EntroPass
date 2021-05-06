@@ -34,7 +34,10 @@ char = 'char.txt'
 [generating-rules]
 use-rules = false
 max_pwds = 1000000
-pattern = 'cccccc' # Allows the program to only generate passwords according to this pattern
+use-patterns = false
+patterns = ['cccccc'] # Allows the program to only generate passwords according to this pattern
+use-top-patterns = true
+top-patterns = 20
 #####################################
 
 [common-separators]
