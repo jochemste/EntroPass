@@ -4,8 +4,10 @@ from pwd_score import Pwd_score
 from print_utils import *
 from colorama import Fore, Style, Back
 from threading import Thread
+import subprocess
 import argparse
 import toml
+import time
 import sys
 import os
 
@@ -34,10 +36,14 @@ class EntroPass():
                   ':', e)
             sys.exit(1)
         parser = argparse.ArgumentParser()
-        #parser.add_argument('-k', '--keywords', required=False)
+        
         parser.add_argument('-d', '--debug', required=False, action='store_true')
+        parser.add_argument('-u', '--update', required=False, action='store_true')
         parser.add_argument('-c', '--compare', required=False, help='Compare password to results')
         args = parser.parse_args()
+
+        if args.update:
+            self.run_update()
         
         if args.debug:
             self.debug = True
@@ -79,6 +85,17 @@ class EntroPass():
             self.write_t_file()
             cprint('Wrote', self.get_count(), 'passwords to', self.config['print']['fd'])
 
+    def run_update(self):
+        cmd = ['../update_psswd_form']
+        cprint('Running updates')
+        time.sleep(1)
+        subprocess.Popen(cmd, stdin=sys.stdin,
+                         stdout=sys.stdout,
+                         stderr=sys.stderr)
+        time.sleep(1)
+        cprint('Finished running updates')
+        sys.exit(0)
+            
     def run_seeding_expanse(self):
         """
         """

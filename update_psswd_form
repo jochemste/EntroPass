@@ -12,7 +12,7 @@ from colorama import Fore, Back, Style
 from datetime import datetime
 import math
 
-
+PATH = os.path.dirname(os.path.abspath(__file__))+'/'
 
 def print_r_date(text):
     d = Back.BLUE+datetime.now().strftime('[%H:%M:%S]')+Style.RESET_ALL
@@ -114,16 +114,16 @@ def passwd_file_to_format(forms_dict, lengths_dict, chars_dict, nchars_dict,
         print(Fore.RED+'[ERROR]'+Style.RESET_ALL+' process unsuccessful')
         print(Fore.RED+str(e)+Style.RESET_ALL)
 
-dir_psswd = 'passwords' # directory where standard password wordlists are stored
-dir_output = 'processed' # directory where the processed output will be stored
+dir_psswd = PATH+'passwords' # directory where standard password wordlists are stored
+dir_output = PATH+'processed' # directory where the processed output will be stored
 file_form = 'format.txt' # file name of the file where password formats will be stored
 file_len = 'length.txt' # file name of the file where password lengths will be stored
 file_char = 'char.txt' # file name of the file where used chars will be stored
 file_schar = 'schar.txt' # file name of the file where used special chars will be stored
 file_dchar = 'dchar.txt' # file name of the file where used digit chars will be stored
 file_nchar = 'nchar.txt' # file name of the file where used normal chars will be stored
-max_prccs = 260
-div_size = 1000
+max_prccs = 500
+div_size = 4000
 feedback_time = 5
 
 files = os.scandir(dir_psswd) # All files in the 'passwords' directory as a generator for efficiency

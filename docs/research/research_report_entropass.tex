@@ -235,27 +235,33 @@ The first method would be quite computationally heavy and on most systems, would
 On the other hand, the first method will be very likely to generate the accurate password somewhere along the line, as long as the right seed words are provided. The second method will only provide the right password if one of the formats matches the password to be guessed. However, if this smaller list of passwords holds the right password, the increase in speed can be very significant, both when running the wordlist generator and when running a dictionary attack.
 
 \subsubsection{How can the program remain up to date with changing password practices?}
-
+For the program to be able to remain up to date with changing password practices, it was researched if the research from the previous sub-questions could somehow be automated. The scripts, written for the research, were adjusted for this purpose and more password files were added to test if the output would be usable for the wordlist generator. This resulted in a directory structure with raw password files in one directory and a script that wrote the results into a separate directory for the wordlist generator to use, updating the formats, characters and passwords lengths.
 
 \subsection{Sub-Conclusions}
 
 \begin{itemize}
-\item What are standard password formats?
+\item What are standard password formats?\\
 
   The results provided valuable information on password formats, password lengths and the most used characters. The results show that passwords, with only lower-case alphabetical characters, a length of six characters, and using the most popular characters such as $a,e,r,o,i,n$, etc. are by far the most used ones. In a more general sense, the most used passwords consist of one type of character, which is either digits or alphabetical characters. Only a fraction of the used password formats mix lower-case alphabetical characters and digits, and a much smaller fraction uses different types of characters, although more than two different types in a single password format was not discovered in the data sets.
   
-\item What personal information is relevant for password guessing?
+\item What personal information is relevant for password guessing?\\
 
-  Looking at the results of categorising passwords, it becomes evident that most passwords are based on names, if based on personal information.
+  Looking at the results of categorising passwords, it becomes evident that most passwords are based on names, if based on any personal information. A large number of passwords are also based on keyboard strokes and erotic words/phrases. After this, most passwords are based on sport, animals, cars, movies, pets, nicknames and place of residence.
   
-\item How can the processed information be structured efficiently, to allow for efficient dictionary attacks?
+\item How can the processed information be structured efficiently, to allow for efficient dictionary attacks?\\
 
-\item How can the program remain up to date with changing password practices?
+  When looking at the results, it can be seen that the different methods have different advantages and can be more useful than the other in different situations. One of the methods would require more computational power, but is most likely to find the right password, while the other method does not require such high computational power, but is less likely to include the right password.
 
+\item How can the program remain up to date with changing password practices?\\
+
+  By using scripts to analyse the password files and generate output that can be processed by the wordlist generator, the program can be kept up to date. The user would need to place password files into the right directory and run the script, to update the most used formats, characters and password lengths.
+  
 \end{itemize}
 
 \newpage
 \section{Conclusions}
+
+
 
 \newpage
 \section{Discussion}
