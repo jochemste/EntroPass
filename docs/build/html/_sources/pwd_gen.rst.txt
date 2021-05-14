@@ -1,0 +1,7 @@
+pwd\_gen module
+===============
+
+.. automodule:: pwd_gen
+   :members:
+   :undoc-members:
+   :show-inheritance:

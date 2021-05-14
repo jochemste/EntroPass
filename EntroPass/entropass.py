@@ -17,6 +17,7 @@ RESET = Style.RESET_ALL
 
 class EntroPass():
     """
+    Main class that loads the configuration and controls all the other classes.
     """
     config_fd = '../config/entropass_conf.toml'
     passwords = []
@@ -27,6 +28,7 @@ class EntroPass():
     
     def __init__(self):
         """
+        Load configuration file, parse the command line parameters and loads the seed words.
         """
         try:
             self.config = toml.load(self.config_fd)
@@ -56,6 +58,10 @@ class EntroPass():
 
     def run(self):
         """
+        Main function to run the needed functions. Will start by expanding the number of seed words,
+        followed by permutations, replacement of characters, removing duplicates, filtering 
+        to match patterns, searching for the given password and finally scoring the passwords 
+        and limiting number of passwords to a specified number.
         """
         try:
 
@@ -86,6 +92,10 @@ class EntroPass():
             cprint('Wrote', self.get_count(), 'passwords to', self.config['print']['fd'])
 
     def run_update(self):
+        """
+        Calls the update script to process information in the password directory and generate 
+        formats and such in the processed directory.
+        """
         cmd = ['../update_psswd_form']
         cprint('Running updates')
         time.sleep(1)
@@ -98,6 +108,8 @@ class EntroPass():
             
     def run_seeding_expanse(self):
         """
+        Expand seeding words by generating all possible combinations of upper and lower 
+        case characters of the words.
         """
         self.passwords.append(self.seed_words)
 
@@ -112,6 +124,7 @@ class EntroPass():
         
     def run_permutations(self):
         """
+        Generates permutations of the seed words and adds them to the password lists.
         """
         cprint('Generating permutations')
         self.passwords.append(self.gen.word_perms(words=self.seed_words,
@@ -119,6 +132,8 @@ class EntroPass():
 
     def run_replace(self):
         """
+        Replaces characters in all words with common replacements. Does not overwrite any words,
+        but simply adds the new ones.
         """
         cprint('Replacing characters')
         new_psswds = []
@@ -135,6 +150,7 @@ class EntroPass():
 
     def run_filter(self):
         """
+        Filter the found passwords to those that match the configured patterns.
         """
         cprint('Filtering passwords with patterns:', len(self.passwords), '...')
         self.passwords = self.gen.filter(self.passwords)
@@ -142,6 +158,7 @@ class EntroPass():
 
     def get_count(self):
         """
+        Gets the number of passwords.
         """
         count = len(self.passwords)
 
@@ -149,11 +166,14 @@ class EntroPass():
 
     def print_passwords(self):
         """
+        Prints the passwords, separated by a comma.
         """
         print(', '.join(self.passwords))
 
     def write_t_file(self):
         """
+        Writes the passwords to the configured file. Creates the specified directory if it 
+        does not exist.
         """
         dir = self.config['print']['dir']
         os.makedirs(dir, exist_ok=True)
@@ -163,6 +183,7 @@ class EntroPass():
 
     def __rm_duplicates(self):
         """
+        Removes the duplicates from the list of passwords.
         """
         cprint('Removing duplicates')
         passwords = []
@@ -174,6 +195,7 @@ class EntroPass():
 
     def __score_pwds(self):
         """
+        Scores the passwords according to the most popular formats, characters and more.
         """
         self.sorted_pwds = {}
         length = len(self.passwords)
@@ -209,6 +231,18 @@ class EntroPass():
 
     def __sort_scored(self, scored):
         """
+        Sorts the scored passwords, from highest score to lowest. Prints an error message and 
+        exits if it cannot sort the values.
+
+        Parameters
+        ----------
+        scored : dict
+            A dictionary with the keys being the passwords and the values being the scores.
+
+        Returns
+        -------
+        srtd : dict
+            Same as scored parameter, only sorted from high score to low.
         """
         try:
             srtd = {key: value for  key, value in sorted(scored.items(), key=lambda item: item[1],
@@ -219,11 +253,19 @@ class EntroPass():
             sys.exit(1)
 
     def __limit_words(self):
+        """
+        Limits the number of passwords to the specified number. Should be used on scored and 
+        sorted password lists, to get only the top scored passwords.
+        """
         cprint('Reducing number of passwords to write into file from', len(self.passwords),
                'to', self.config['results']['max_words'])
         self.passwords = self.passwords[:min(self.config['results']['max_words'], len(self.passwords))]
 
     def __search_for_pwd(self):
+        """
+        Searches for the specified password in the generated password. Returns once the 
+        password was found.
+        """
         run_as_str = False
         for pwd in self.passwords:
             if type(pwd) == str:

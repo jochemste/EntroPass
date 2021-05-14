@@ -1,0 +1,7 @@
+pwd\_score module
+=================
+
+.. automodule:: pwd_score
+   :members:
+   :undoc-members:
+   :show-inheritance:

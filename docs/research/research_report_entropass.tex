@@ -59,7 +59,9 @@
 
 
     \Large
-    A research report presented for the design \& implementation of EntroPass
+    A research report presented for the design \& implementation of EntroPass\\
+    \normalsize
+    Flexible Project
 
     \vspace{0.8cm}
 
@@ -73,7 +75,7 @@
   \normalsize
   Embedded Systems Engineering\\
   Flexible Project\\
-  Hogeschool van Arnhem en Nijmegen\\
+  HAN University of Applied Science\\
   Ton Ammerlaan, Remko Welling\\
   The Netherlands\\
   2021\\
@@ -96,15 +98,15 @@
     \textbf{Abstract}
 \end{center}
 
-This research report has been created for the Hogeschool van Arnhem en Nijmegen as part of the Bachelor Flexible Project of Jochem Stevense and investigates the possibilities of developing a tool to efficiently generate password word-lists, where a specific person is targeted. The purpose of this tool is to show users the vulnerabilities of using memorable passwords in a very practical manner. Next to this, the tool is to be used purely for legal purposes, such as penetration testing.\\
+This research report is created for the HAN University of Applied Science as part of the Bachelor Flexible Project of Jochem Stevense and investigates the possibilities of developing a tool to efficiently generate password word-lists, where a specific person is targeted. The purpose of this tool is to show users the vulnerabilities of using memorable passwords in a very practical manner. Additionally, the tool is to be used purely for legal purposes, such as penetration testing.\\
 
 Word-lists are often used to perform dictionary attacks against services that require authentication. These word-lists are mostly a compilation of most used passwords, resulting from numerous data-leaks, and do not target a specific person. This is useful when trying to perform these attacks on a larger number of targets. However, when targeting a single target, these passwords can be too general, which is why this research aims to lay the foundations for a tool that generates word-lists based on provided personal information of a single target. To do this, research had to be conducted to password practices, which resulted in the following research question:\\
 \textit{What functionalities should a password word-list generating tool have to be able to utilise standard password practices when targeting a single, specific user?}\\
-This research resulted in the clear indications about the most used password formats, characters, and personal information used to create memorable passwords.\\
-The research also provided insights to how the data might be processed and structured for efficient dictionary attacks, resulting in two methods; generating the maximum amount of passwords with given information and scoring them according the the most popular formats, characters and personal information, and generating far less passwords, only sticking to the most popular formats and scoring these passwords based on the same criteria as the first method. Both of these methods have their advantages and disadvantages, where the first method is most likely to produce the right password, it is also computationally demanding. The second method on the other hand is far less demanding, but less likely to produce the right results.\\
+This research resulted in indications about the most used password formats, characters, and personal information used to create memorable passwords.\\
+The research also provided insights to how the data might be processed and structured for efficient dictionary attacks, resulting in two methods; generating the maximum amount of passwords with given personal information and scoring them according to the most popular formats, characters and personal information, and generating far less passwords, only sticking to the most popular formats and scoring these passwords based on the same criteria as the first method. Both of these methods have their advantages and disadvantages, where the first method is most likely to produce the right password, it is also computationally demanding. The second method on the other hand is far less demanding, but less likely to produce the right results.\\
 To keep the program up to date, the research had to be capable of being done automatically, so the program can do this on demand, resulting in an automated update script.\\
 
-The password formats, characters and used personal information will be used to score passwords and the data will be allowed to be processed and structured according to either one of the mentioned methods, based on the configuration, to allow for the program to be adjusted, based on the use-case.\\
+The password formats, characters and used personal information is used to score passwords and the data will be allowed to be processed and structured according to either one of the mentioned methods, based on the configuration, to allow for the program to be adjusted, based on the use-case.\\
 The program will be updated on password formats and characters by using the automated update script, but it is recommended to also research and develop a way to automate the categorising of the personal information used in passwords, although this could prove challenging and would require a large amount of data.
 
 \newpage
@@ -116,10 +118,9 @@ The program will be updated on password formats and characters by using the auto
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \label{ch:intro}
-This research report has been created for the Hogeschool van Arnhem en Nijmegen as part of the Bachelor Flexible Project of Jochem Stevense and investigates the possibilities of developing a tool to efficiently guess for passwords, targeting a single specific person. The purpose of such a tool is to show users the vulnerabilities introduced by using memorable passwords and to generate word-lists to be used for ethical hacking and penetration testing purposes.\\
+This research report has been created for the HAN University of Applied Science as part of the Bachelor Flexible Project of Jochem Stevense and investigates the possibilities of developing a tool to efficiently guess for passwords and write them into a word-list, targeting a single specific person. The purpose of such a tool is to show users the vulnerabilities introduced by using memorable passwords and to generate word-lists to be used for ethical hacking and penetration testing purposes.\\
 
-Word-lists are used by threat actors to perform dictionary attacks on services that require authentication, parsing through a list of words and trying to login, using these words as passwords. The same can be done with usernames, although usernames are generally easier to discover, depending on the service to authenticate to.\\
-Most of the word-lists available are simply a compilation of previously discovered passwords, resulting from data breaches, and often hold the most used ones or the ones found in a specific data breach. This can prove useful when targeting a large number of users, since it is likely that one of these users will use a password that is included in the list. However, when targeting a single user, the odds of the password being included in such a list can be small. The reason for this is that many users use personalised passwords to be able to memorise the credentials. Although these personalised passwords are unlikely to be included in a general word-list, they are often not hard to guess, when personal information about a target user is known.\\
+Word-lists are used by threat actors to perform dictionary attacks on services that require authentication, parsing through a list of words and trying to login, using these words as passwords. The same can be done with usernames, although usernames are generally easier to discover, depending on the service to authenticate to. Most of the available word-lists are simply a compilation of previously discovered passwords, resulting from data breaches, and often hold the most used ones or the ones found in a specific data breach. This can prove useful when targeting a large number of users, since it is likely that one of these users will use a password that is included in the list. However, when targeting a single user, the odds of the password being included in such a list can be small. The reason for this is that many users use personalised passwords to be able to memorise the credentials. Although these personalised passwords are unlikely to be included in a general word-list, they are often not hard to guess, when personal information about a target user is known.\\
 This research aims to gain insight into what functionality a password word-list generating tool would need, to be able to guess these personalised passwords for a single user. To reach this goal, the following research question has been defined:\\
 
 \textit{What functionalities should a password word-list generating tool have to be able to utilise standard password practices when targeting a single, specific user?}
@@ -133,38 +134,38 @@ The main research question has been divided into several sub-questions. These su
 \item \textit{How can the program remain up to date with changing password practices?}
 \end{itemize}
 
-This research will consist of a combination of qualitative and quantitative research to find the most used password formats, used personal information for passwords, how the information can be structured and how to remain up to date with changing password practices. Desk research will be used to find the most used password formats, by gathering leaked passwords, publicly available and analysing the passwords for the formats, and most used characters. The found passwords will also be analysed to detect personal information embedded into the passwords. Once this information is found, field research will be used to test the structuring of the data and how to analyse the data automatically and keep up with changing password practices.
+This research consisted of a combination of qualitative and quantitative research to find the most used password formats, used personal information for passwords, how the information could be structured and how to remain up to date with changing password practices. Desk research has been used to find the most used password formats, by gathering publicly available leaked passwords, collected by Daniel Miessler \cite{bib:seclists}, and analysing the passwords for the formats, and most used characters. The found passwords have also been analysed to detect personal information embedded into the passwords. Once this information was found, field research has been used to test the structuring of the data and how to analyse the data automatically and keep up with changing password practices.
 
 \newpage
 \section{Research}
 
-\subsection{Theoretical Framework}
+\subsection{Password Entropy and Patterns}
 Ma, Campbell Tran and Kleeman \cite{bib:entro} mention that password entropy, used to indicate password strength, is loosely defined and mention that the calculation of this entropy is an inadequate indicator to password strength. Password strength is not only defined by the used character library and length, but is also relative to the attacker. Entropy calculations might indicate a password to be very strong, even though the actual entropy is effectively very low if an attacker has accurate ideas on what this password might be.\\
 
 Chou, Lee, Yu, Lai, Huang and Hsueh \cite{bib:pform} define password formats to have certain lengths, a combination of characters, and a pattern in the order of the characters and have proven so with the help of machine learning tools to learn these patterns and reproduce passwords using these patterns. This information allows for a clear direction for the analysing of password formats.
 
-\subsection{Methodology}
+\subsection{Methodology for Password Patterns Research}
 The methodology deals with the methods, used to answer the sub-questions and the main question, formulated in chapter \ref{ch:intro}. Firstly, the sub-questions will be handled, after which the main research question will be dealt with.
 
 \begin{itemize}
 \item \textit{What are standard password formats?}\\
-  To answer this question, desk research will be conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats will be sorted in a list of most used to least used. The passwords will also be analysed for most used characters. This will be done automatically by using a Python script, which will be written specifically for the use of this research. The script will be made available for interested parties with the final project.
+  To answer this question, desk research was conducted, using online resources, such as leaked data/passwords, to create a list of formats, as used by users in the breach. The formats have been sorted in a list of most used to least used. The passwords have also been analysed for most used characters. This will be done automatically by using a Python script, which was written specifically for the use of this research. The script will be made available for interested parties with the final project.
   
 \item \textit{What personal information is relevant for password guessing?}\\
-  Passwords are often based on personal information to make them easier to memorise. This personal information should be mapped to categories, to determine what a person is most likely to use for a memorable password. This will be done by desk research. This desk research will involve the use of the earlier mentioned word-lists from data breaches and analysing these manually to determine what categories are popular amongst users. Categories might involve aspects like, relationships, date of birth, pet names, etc.
+  Passwords are often based on personal information to make them easier to memorise. This personal information was mapped to categories, to determine what a person is most likely to use for a memorable password. This has been done by desk research. This desk research involved the use of the earlier mentioned word-lists from data breaches and analysing these manually to determine what categories are popular amongst users. Categories involve aspects like, relationships, date of birth, pet names, etc.
   
-\item \textit{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
-  To be able to answer this question, field research will be conducted to test different structures and determine which is most efficient in terms of finding the password as fast as possible. Several test scripts will be used to determine which structure is most efficient for a dictionary attack.
+\item \textit{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}\\
+  To be able to answer this question, field research was conducted to test different structures and determine which is most efficient in terms of finding the password as fast as possible.
 
-\item \textit{How can the program remain up to date with changing password practices?}
-  This question will be answered by looking into sources of information for password practices, after which possibilities will be researched for gathering this information and analysing it in an automated way.
+\item \textit{How can the program remain up to date with changing password practices?}\\
+  This question was answered by looking into sources of information for password practices, after which possibilities were researched for gathering this information and analysing it in an automated way.
 \end{itemize}
 
-\subsection{Results}
+\section{Results}
 
 The results of the research will be handled per question, firstly dealing with the sub-questions. The results are listed in this paragraph. The conclusions from these results will be dealt with in the Conclusions chapter.
 
-\subsubsection{What are standard password formats?}
+\subsection{What are standard password formats?}
 
 To be able to determine patterns in passwords, password formats have been researched. The formats have been defined as the combination of password length, used characters (differentiating between lower case alphabetical, higher case alphabetical, digits and special characters) and the positions of the used characters. To determine the most used password formats, several password files from Daniel Miessler's Seclists \cite{bib:seclists} have been used for analysis, with the help of custom Python scripts. These password files have been the results of disclosed data-breaches and are/were real passwords. The total number of used passwords is 37,045 (thirty seven thousand forty five), and the used files are listed in the Appendices \ref{app:pwordfile}. The total number of characters in the combined files is 294,028.\\
 
@@ -207,7 +208,7 @@ Focusing more on the length of the passwords, figure \ref{fig:plen} shows the mo
 \end{figure}
 
 \newpage
-\subsubsection{What personal information is relevant for password guessing?}
+\subsection{What personal information is relevant for password guessing?}
 
 To find the personal information, most relevant for password guessing, one of the password file was analysed manually. The file contained about 10,000 passwords, of which a little over 1,300 were categorised manually, with the help of a simple python script, which can be found in the Appendices (\ref{app:pwordcatscript}). To analyse these passwords, the script parsed over them, after which the researcher decided what category would suit the password best. The researcher then selected or entered the category, after which the script would increment the count on a category or create the category if it did not exist yet. This resulted in a number of categories. Most categories are self-explanatory, which is why not all will be explained in detail. The less evident categories will be handled along with the results.
 
@@ -219,14 +220,14 @@ To find the personal information, most relevant for password guessing, one of th
   \label{fig:pcat}
 \end{figure}
 
-The results can be found in figure \ref{fig:pcat}. A number of categories are not entirely self-explanatory, which is why they will be explained in greater detail. The \lstinline{other} category includes all passwords that simply did not fit into any of the others, due to being passwords such as \lstinline{password} or \lstinline{mauyigv68}. Next to this, the \lstinline{keyboard} category can be seen, which hold all passwords that are clearly based on neighbouring keys or otherwise easy keystrokes. Some examples of this are \lstinline{qwerty} and \lstinline{mnbvcxz}.
+The results can be found in figure \ref{fig:pcat}. A number of categories are not entirely self-explanatory, which is why they will be explained in greater detail. The \lstinline{other} category includes all passwords that simply did not fit into any of the others, due to being passwords such as \lstinline{password} or \lstinline{mauyigv68}. Next to this, the \lstinline{keyboard} category can be seen, which holds all passwords that are clearly based on neighbouring keys or otherwise easy keystrokes. Some examples of this are \lstinline{qwerty} and \lstinline{mnbvcxz}.
 
-The results show a large difference between the count of the categories with the \lstinline{name} category being the one with the highest count by far, indicating that this category is important when trying to guess passwords. Since the \lstinline{other} category is a collection of all passwords that did not fit into any category, it is not surprising that this category has a high count. More surprising is the \lstinline{keyboard} category taking the third position, indicating that the patterns that are used for keystroke passwords should be investigated further.\\
+The results show large differences between the count of the categories with the \lstinline{name} category being the one with the highest count by far, indicating that this category is important when trying to guess passwords. Since the \lstinline{other} category is a collection of all passwords that did not fit into any category, it is not surprising that this category has a high count. More surprising is the \lstinline{keyboard} category taking the third position, indicating that the patterns that are used for keystroke passwords should be investigated further.\\
 The \lstinline{erotic} category also had a large number of passwords, which mostly seemed to have been created jokingly.\\
 
 Other personal information that is often used is sport, like football clubs, baseball clubs, or simply the name of the sport.
 
-\subsubsection{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
+\subsection{How can the processed information be structured efficiently, to allow for efficient dictionary attacks?}
 
 Since using only the most popular format, with the most popular characters and password length would result in a password such as \lstinline{aaaaaa}, a different approach should be taken. To find the best method for generated passwords to be structured, a number of different approaches are described and compared based on positive and negative aspects.
 
@@ -241,10 +242,10 @@ Since using only the most popular format, with the most popular characters and p
 The first method would be quite computationally heavy and on most systems, would probably take a while to finish. Also, this computation would become exponentially heavy with more seed words, due to more combinations being possible. The second method could be allowed to run much shorter, and could run on far less powerful equipment.\\
 On the other hand, the first method will be very likely to generate the accurate password somewhere along the line, as long as the right seed words are provided. The second method will only provide the right password if one of the formats matches the password to be guessed. However, if this smaller list of passwords holds the right password, the increase in speed can be very significant, both when running the word-list generator and when running a dictionary attack.
 
-\subsubsection{How can the program remain up to date with changing password practices?}
+\subsection{How can the program remain up to date with changing password practices?}
 For the program to be able to remain up to date with changing password practices, it was researched if the research from the previous sub-questions could somehow be automated. The scripts, written for the research, were adjusted for this purpose and more password files were added to test if the output would be usable for the word-list generator. This resulted in a directory structure with raw password files in one directory and a script that wrote the results into a separate directory for the word-list generator to use, updating the formats, characters and passwords lengths.
 
-\subsection{Sub-Conclusions}
+\subsection{Sub-Conclusions of Password Pattern Research}
 
 \begin{itemize}
 \item What are standard password formats?\\
@@ -266,13 +267,13 @@ For the program to be able to remain up to date with changing password practices
 \end{itemize}
 
 \newpage
-\section{Conclusions}
+\section{Conclusions from Pattern Research}
 
 The results provided useful insights into password formats, information used to keep passwords memorable, how information can be structured and processed and how the program can be kept up to date with changing password practices. Resulting from this, it becomes clear that the word-list generator should be able to find out what password formats are most popular, what characters are most used, and use this to score generated passwords. Since both mentioned methods for structuring and processing the data have their advantages and disadvantages, both should be used and be allowed to be enabled or disabled by configuration files. To stay up to date with changing password practices, the program should be capable of processing passwords automatically to generate the formats and most used characters, as done for this research. Users should also be able to provide the program with a list of words that relates to the target, preferably using information from the categories mentioned in this research.
 
-\subsection{Recommendations}
+\subsection{Recommendations for Future Research and Development}
 
-To be able to score passwords more accurately, the researched categories should be used to discover what information is used in passwords. To be able to do this, it is recommended to include a number of lists in the program directories, where each category has a separate list. These lists can then be used to compare the contents to the passwords, scoring the generated passwords, based on the popularity of the category. For this reason, it is also recommended to automate the process of categorising password contents, although this would require massive amounts of data, a significant amount of development and Machine Learning like programs to do accurately.
+To be able to score passwords more accurately, the researched categories should be used to discover what information is used in passwords. To be able to do this, it is recommended to include a number of lists in the program directories, where each category has a separate list. These lists can then be used to compare the contents to the passwords, scoring the generated passwords, based on the popularity of the category. For this reason, it is also recommended to automate the process of categorising password contents, although this would require massive amounts of data, a significant amount of development and Machine Learning-like programs to do accurately.
 
 \newpage
 \begin{thebibliography}{9}
