@@ -6,10 +6,17 @@ from threading import Thread
 
 class Pwd_gen():
     """
+    A class to handle generating passwords, by using permutations, upper/lower 
+    character combinations, replacement of characters, and more.
     """
     def __init__(self, config_fd):
         """
-        Load specified configuration file
+        Loads a specified configuration file.
+
+        Parameters
+        ----------
+        config_fd : str
+            File path of the configuration file.
         """
         self.config = toml.load(config_fd)
         if self.config['generating-rules']['use-patterns']:
@@ -26,6 +33,17 @@ class Pwd_gen():
         Test, tEst, teSt. Followed by all chars left to right: test, Test, TEst, TESt
         Followed by the inverse: TEST, tEST, teST, tesT.
         Removes duplicates before returning.
+        Runs in three threads for speed.
+
+        Parameters
+        ----------
+        word : str
+            Word to base the new results on.
+
+        Returns
+        -------
+        results : list
+            Results from the three threads.
         """
         word = word.lower()
         self.results = []
@@ -52,6 +70,22 @@ class Pwd_gen():
         Permutations of given words, using a given amount of  words per
         result. For example: words=['hello', 'world', '!'], nr_in_result=2 
         would give results like: 'hello!', 'helloworld', '!world', etc.
+
+        Parameters
+        ----------
+        words : list
+            List of words to create permutations of.
+        nr_in_result : int
+            Number of words in the final results.
+        add_cmmn_sep : bool, default = True
+            Adds a commonly used separator to be used in the permutations.
+        add_cmmn_end : bool, default = True
+            Adds a commonly used end to be used in the permutations.
+
+        Returns
+        -------
+        results : list
+            Resulting permutations.
         """
         perms = itertools.permutations([c for c in words], nr_in_result)
         if add_cmmn_sep:
@@ -78,6 +112,23 @@ class Pwd_gen():
         the nr of results. Results are filtered from duplicates at the end, making that 5 
         iterations can provide the same nr of results as 100. However, this will make a 
         significant difference in the processing time.
+
+        Parameters
+        ----------
+        word : str
+            Word to replace common characters from.
+        count : int, default = None
+            Nr of characters to replace every time. For example, if the word is 'all' and 'l' 
+            would be replaced by '|', having count=None would result in 'a||', while having count=1
+            would result in 'a|l'.
+        iterations : int, default = 4
+            Number of times to parse previous results. This can allow words like 'all' to 
+            become words like '@||' for example.
+
+        Returns
+        -------
+        results : list
+            List of results
         """
         results = [word]
 
@@ -116,6 +167,19 @@ class Pwd_gen():
 
     def filter(self, results):
         """
+        Filters the given results to only match the patterns, specified in the configuration.
+        The configuration allows users to specify patterns of use the top patterns from 
+        the processed passwords, or not filter at all.
+        
+        Parameters
+        ----------
+        results : list
+            Results to be checked and filtered.
+        
+        Returns
+        -------
+        results : list
+            Results from the filtering.
         """
         ctr=0
         if self.patterns:
@@ -131,16 +195,48 @@ class Pwd_gen():
         return results
 
     def __single_c_upper(self, word):
+        """
+        Takes a word and creates all possible combinations of this word with one upper character.
+        For example, changes 'word' into 'Word', 'wOrd', 'woRd' and 'worD'. Adds all these words 
+        to the self.results member.
+
+        Parameters
+        ----------
+        word : str
+            Word to use for upper char combinations
+        """
         for i in range(len(word)): # Single Upper chars
             new_word = word[:i] + word[i].upper() + word[i+1:]
             self.results.append(new_word)
 
     def __c_upper_ltr(self, word):
+        """
+        Takes a word and creates all possible combinations of this word with upper characters, 
+        from left to right.
+        For example, changes 'word' into 'Word', 'WOrd', 'WORd' and 'WORD'. Adds all these words 
+        to the self.results member.
+
+        Parameters
+        ----------
+        word : str
+            Word to use for upper char combinations
+        """
         for i in range(0, len(word)): # Upper chars, incrementing from left
             new_word = word[:i].upper() + word[i:]
             self.results.append(new_word)
 
     def __c_upper_rtl(self, word):
+        """
+        Takes a word and creates all possible combinations of this word with upper characters, 
+        from right to left.
+        For example, changes 'word' into 'worD', 'woRD', 'wORD' and 'WORD'. Adds all these words 
+        to the self.results member.
+
+        Parameters
+        ----------
+        word : str
+            Word to use for upper char combinations
+        """
         upper_w = word.upper()
         for i in range(0, len(upper_w)): #Upper chars, decrementing from left
             new_word = upper_w[:i].lower() + upper_w[i:]
@@ -148,6 +244,19 @@ class Pwd_gen():
 
     def __check_if_pattern_match(self, word, pattern):
         """
+        Checks if the pattern of a word matches to a given pattern.
+
+        Parameters
+        ----------
+        word : str
+            Word to check for matching pattern.
+        pattern : str
+            Pattern to check against word.
+
+        Returns
+        -------
+        .bool
+            Returns True if matching, False if not.
         """
         if not(len(word) == len(pattern)):
             return False
@@ -171,6 +280,18 @@ class Pwd_gen():
 
     def __get_top_x_patterns(self, x):
         """
+        Gets the top x patterns from processed passwords, where x is defined in 
+        the configuration file. These patterns are used in filtering.
+        
+        Parameters
+        ----------
+        x : int
+            The number of patterns to retrieve.
+
+        Returns
+        -------
+        patterns : list
+            The patterns from processed passwords, to be used for filtering.
         """
         file_ = self.config['processed-data']['dir']+self.config['processed-data']['format']
         patterns = []
