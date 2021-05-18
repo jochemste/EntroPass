@@ -19,7 +19,7 @@ class EntroPass():
     """
     Main class that loads the configuration and controls all the other classes.
     """
-    config_fd = '../config/entropass_conf.toml'
+    config_fd = os.path.dirname(os.path.abspath(__file__))+'/../config/entropass_conf.toml'
     passwords = []
     scored_pwds = {}
     pass_w_scores = []
@@ -39,9 +39,11 @@ class EntroPass():
             sys.exit(1)
         parser = argparse.ArgumentParser()
         
-        parser.add_argument('-d', '--debug', required=False, action='store_true')
-        parser.add_argument('-u', '--update', required=False, action='store_true')
-        parser.add_argument('-c', '--compare', required=False, help='Compare password to results')
+        parser.add_argument('-d', '--debug', required=False, action='store_true',
+                            help='Turn on debugging mode. NOT IMPLEMENTED YET')
+        parser.add_argument('-u', '--update', required=False, action='store_true',
+                            help='Update the formats and characters with the passwords in the passwords directory. WARNING! This can take a long time depending on the number of passwords in the passwowords directory.')
+        parser.add_argument('-c', '--compare', required=False, help='Compare password to results.')
         args = parser.parse_args()
 
         if args.update:
@@ -60,7 +62,7 @@ class EntroPass():
         """
         Main function to run the needed functions. Will start by expanding the number of seed words,
         followed by permutations, replacement of characters, removing duplicates, filtering 
-        to match patterns, searching for the given password and finally scoring the passwords 
+        to match formats, searching for the given password and finally scoring the passwords 
         and limiting number of passwords to a specified number.
         """
         try:
@@ -96,7 +98,7 @@ class EntroPass():
         Calls the update script to process information in the password directory and generate 
         formats and such in the processed directory.
         """
-        cmd = ['../update_psswd_form']
+        cmd = [os.path.dirname(os.path.abspath(__file__))+'/../update_psswd_form']
         cprint('Running updates')
         time.sleep(1)
         subprocess.Popen(cmd, stdin=sys.stdin,
@@ -150,11 +152,11 @@ class EntroPass():
 
     def run_filter(self):
         """
-        Filter the found passwords to those that match the configured patterns.
+        Filter the found passwords to those that match the configured formats.
         """
-        cprint('Filtering passwords with patterns:', len(self.passwords), '...')
+        cprint('Filtering passwords with formats:', len(self.passwords), '...')
         self.passwords = self.gen.filter(self.passwords)
-        cprint('Filtered passwords with patterns:', len(self.passwords))
+        cprint('Filtered passwords with formats:', len(self.passwords))
 
     def get_count(self):
         """
@@ -175,7 +177,7 @@ class EntroPass():
         Writes the passwords to the configured file. Creates the specified directory if it 
         does not exist.
         """
-        dir = self.config['print']['dir']
+        dir = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['print']['dir']
         os.makedirs(dir, exist_ok=True)
         with open(dir+self.config['print']['fd'], 'w') as fd:
             for p in self.passwords:

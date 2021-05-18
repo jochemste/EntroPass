@@ -2,7 +2,9 @@
 [words]
 list = [
        'johann',
-       '01-12-1890'
+       '01-12-1890',
+       '2021',
+       'jack'
        ]
 
 [results]
@@ -21,7 +23,7 @@ names = '../categories/names/names.txt'
 foods = '../categories/food/food.txt'
 
 [patterns]
-birthdate = '(.*)\d+(\.|\/|\-|\_)\d+(\.|\/|\-|\_)\d+(.*)'
+birthdate = '(.*)[\d]+(\.|\/|\-|\_)[\d]+(\.|\/|\-|\_)[\d]+(.*)'
 
 # Data that has been pre-processed into formats, chars, etc.
 [processed-data]
@@ -29,16 +31,13 @@ dir = '../processed/'
 format = 'format.txt'
 char = 'char.txt'
 
-#####################################
-## TO DO: Implement generating rules (quite some work)
 [generating-rules]
 use-rules = false
-max_pwds = 1000000
-use-patterns = false
-patterns = ['cccccc'] # Allows the program to only generate passwords according to this pattern
-use-top-patterns = true
-top-patterns = 20
-#####################################
+#max_pwds = 1000000
+use-formats = false
+formats = ['cccccc'] # Allows the program to only generate passwords according to this format
+use-top-formats = true
+top-formats = 10
 
 [common-separators]
 list = [
@@ -79,20 +78,20 @@ list = [
 'x' = ['><', '}{', ':-:']
 'y' = ['¥', '']
 'z' = ['2']
-'0' = ['']
-'1' = []
-'2' = []
-'3' = []
-'4' = []
-'5' = []
-'6' = []
-'7' = []
-'8' = []
-'9' = []
+'0' = ['', 'zero', 'null', 'none']
+'1' = ['one']
+'2' = ['two']
+'3' = ['three']
+'4' = ['four']
+'5' = ['five']
+'6' = ['six']
+'7' = ['seven']
+'8' = ['eight']
+'9' = ['nine']
 '`' = []
 '~' = []
-'!' = []
-'@' = []
+'!' = ['1', '|']
+'@' = ['a', 'A', 'at']
 '#' = []
 '$' = []
 '%' = []

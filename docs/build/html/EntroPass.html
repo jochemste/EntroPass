@@ -88,6 +88,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">User Manual</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">EntroPass</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">EntroPass package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -180,6 +181,7 @@
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">EntroPass.entropass.</span></span><span class="sig-name descname"><span class="pre">EntroPass</span></span><a class="headerlink" href="#EntroPass.entropass.EntroPass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main class that loads the configuration and controls all the other classes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.comp_pwd">
 <span class="sig-name descname"><span class="pre">comp_pwd</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#EntroPass.entropass.EntroPass.comp_pwd" title="Permalink to this definition">¶</a></dt>
@@ -198,7 +200,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.get_count">
 <span class="sig-name descname"><span class="pre">get_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.get_count" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets the number of passwords.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.pass_w_scores">
@@ -213,37 +216,50 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.print_passwords">
 <span class="sig-name descname"><span class="pre">print_passwords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.print_passwords" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Prints the passwords, separated by a comma.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Main function to run the needed functions. Will start by expanding the number of seed words,
+followed by permutations, replacement of characters, removing duplicates, filtering
+to match formats, searching for the given password and finally scoring the passwords
+and limiting number of passwords to a specified number.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run_filter">
 <span class="sig-name descname"><span class="pre">run_filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run_filter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Filter the found passwords to those that match the configured formats.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run_permutations">
 <span class="sig-name descname"><span class="pre">run_permutations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run_permutations" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generates permutations of the seed words and adds them to the password lists.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run_replace">
 <span class="sig-name descname"><span class="pre">run_replace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run_replace" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Replaces characters in all words with common replacements. Does not overwrite any words,
+but simply adds the new ones.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run_seeding_expanse">
 <span class="sig-name descname"><span class="pre">run_seeding_expanse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run_seeding_expanse" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Expand seeding words by generating all possible combinations of upper and lower
+case characters of the words.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.run_update">
 <span class="sig-name descname"><span class="pre">run_update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.run_update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calls the update script to process information in the password directory and generate
+formats and such in the processed directory.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.scored_pwds">
@@ -253,7 +269,9 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.entropass.EntroPass.write_t_file">
 <span class="sig-name descname"><span class="pre">write_t_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.entropass.EntroPass.write_t_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Writes the passwords to the configured file. Creates the specified directory if it
+does not exist.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -263,22 +281,70 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="EntroPass.print_utils.cprint">
 <span class="sig-prename descclassname"><span class="pre">EntroPass.print_utils.</span></span><span class="sig-name descname"><span class="pre">cprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">back</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\x1b[32m\x1b[1m[*]</span> <span class="pre">\x1b[0m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.print_utils.cprint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print messages with a colour. Resets all colour settings after printing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – The text arguments. Can be any type of variable.</p></li>
+<li><p><strong>fore</strong> (<em>str</em>) – Code to set the colour of the text.</p></li>
+<li><p><strong>back</strong> (<em>str</em>) – Code to set the colour of the background of the text.</p></li>
+<li><p><strong>style</strong> (<em>str</em>) – Code to set the style of the text.</p></li>
+<li><p><strong>start</strong> (<em>str</em><em>, </em><em>default = START_SUCCESS</em>) – Starting string of the text.</p></li>
+<li><p><strong>sep</strong> (<em>str</em><em>, </em><em>default = ' '</em>) – Separator for in between arguments.</p></li>
+<li><p><strong>end</strong> (<em>str</em><em>, </em><em>default =</em>) – End of the text.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Unused</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="EntroPass.print_utils.error">
 <span class="sig-prename descclassname"><span class="pre">EntroPass.print_utils.</span></span><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.print_utils.error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print a error message with the accompanying colour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – The text arguments. Can be any type of variable.</p></li>
+<li><p><strong>sep</strong> (<em>str</em><em>, </em><em>default = ' '</em>) – Separator for in between arguments.</p></li>
+<li><p><strong>end</strong> (<em>str</em><em>, </em><em>default =</em>) – End of the text.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Unused</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="EntroPass.print_utils.success">
 <span class="sig-prename descclassname"><span class="pre">EntroPass.print_utils.</span></span><span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.print_utils.success" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print a success message with the accompanying colour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – The text arguments. Can be any type of variable.</p></li>
+<li><p><strong>sep</strong> (<em>str</em><em>, </em><em>default = ' '</em>) – Separator for in between arguments.</p></li>
+<li><p><strong>end</strong> (<em>str</em><em>, </em><em>default =</em>) – End of the text.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Unused</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="EntroPass.print_utils.warning">
 <span class="sig-prename descclassname"><span class="pre">EntroPass.print_utils.</span></span><span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.print_utils.warning" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print a warning message with the accompanying colour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – The text arguments. Can be any type of variable.</p></li>
+<li><p><strong>sep</strong> (<em>str</em><em>, </em><em>default = ' '</em>) – Separator for in between arguments.</p></li>
+<li><p><strong>end</strong> (<em>str</em><em>, </em><em>default =</em>) – End of the text.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Unused</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-EntroPass.pwd_gen">
@@ -287,10 +353,26 @@
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">EntroPass.pwd_gen.</span></span><span class="sig-name descname"><span class="pre">Pwd_gen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_fd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to handle generating passwords, by using permutations, upper/lower
+character combinations, replacement of characters, and more.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.filter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Filters the given results to only match the formats, specified in the configuration.
+The configuration allows users to specify formats of use the top formats from
+the processed passwords, or not filter at all.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>results</strong> (<em>list</em>) – Results to be checked and filtered.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>results</strong> – Results from the filtering.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.rep_cmmn_chars">
@@ -302,6 +384,24 @@ the results as well. In iterations, all previous results are used, exponentially
 the nr of results. Results are filtered from duplicates at the end, making that 5
 iterations can provide the same nr of results as 100. However, this will make a
 significant difference in the processing time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>) – Word to replace common characters from.</p></li>
+<li><p><strong>count</strong> (<em>int</em><em>, </em><em>default = None</em>) – Nr of characters to replace every time. For example, if the word is ‘all’ and ‘l’
+would be replaced by ‘|’, having count=None would result in ‘a||’, while having count=1
+would result in ‘a|l’.</p></li>
+<li><p><strong>iterations</strong> (<em>int</em><em>, </em><em>default = 4</em>) – Number of times to parse previous results. This can allow words like ‘all’ to
+become words like ‘&#64;||’ for example.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>results</strong> – List of results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -310,7 +410,19 @@ significant difference in the processing time.</p>
 <dd><p>Change characters in word to upper characters. Changes single characters first:
 Test, tEst, teSt. Followed by all chars left to right: test, Test, TEst, TESt
 Followed by the inverse: TEST, tEST, teST, tesT.
-Removes duplicates before returning.</p>
+Removes duplicates before returning.
+Runs in three threads for speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Word to base the new results on.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>results</strong> – Results from the three threads.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -319,6 +431,22 @@ Removes duplicates before returning.</p>
 <dd><p>Permutations of given words, using a given amount of  words per
 result. For example: words=[‘hello’, ‘world’, ‘!’], nr_in_result=2
 would give results like: ‘hello!’, ‘helloworld’, ‘!world’, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>words</strong> (<em>list</em>) – List of words to create permutations of.</p></li>
+<li><p><strong>nr_in_result</strong> (<em>int</em>) – Number of words in the final results.</p></li>
+<li><p><strong>add_cmmn_sep</strong> (<em>bool</em><em>, </em><em>default = True</em>) – Adds a commonly used separator to be used in the permutations.</p></li>
+<li><p><strong>add_cmmn_end</strong> (<em>bool</em><em>, </em><em>default = True</em>) – Adds a commonly used end to be used in the permutations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>results</strong> – Resulting permutations.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

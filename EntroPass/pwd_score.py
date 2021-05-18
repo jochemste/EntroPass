@@ -1,6 +1,8 @@
 from string import ascii_lowercase
 import toml
 import re
+import os
+
 class Pwd_score():
     """
     """
@@ -13,11 +15,11 @@ class Pwd_score():
         """
         """
         self.config = toml.load(config_fd)
-        dir = self.config['processed-data']['dir']
+        dir = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['processed-data']['dir']
         self.form_fd = dir+self.config['processed-data']['format']
         self.char_fd = dir+self.config['processed-data']['char']
-        self.name_fd = self.config['categories']['names']
-        self.foods_fd = self.config['categories']['foods']
+        self.name_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['names']
+        self.foods_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['foods']
         self.__parse_formats()
         self.__parse_chars()
         self.__parse_names()

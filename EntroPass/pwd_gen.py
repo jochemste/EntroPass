@@ -3,6 +3,7 @@ from string import ascii_lowercase
 import itertools
 import toml
 from threading import Thread
+import os
 
 class Pwd_gen():
     """
@@ -19,12 +20,12 @@ class Pwd_gen():
             File path of the configuration file.
         """
         self.config = toml.load(config_fd)
-        if self.config['generating-rules']['use-patterns']:
-            self.patterns = self.config['generating-rules']['patterns']
-        elif self.config['generating-rules']['use-top-patterns']:
-            self.patterns = self.__get_top_x_patterns(x=self.config['generating-rules']['top-patterns'])
+        if self.config['generating-rules']['use-formats']:
+            self.formats = self.config['generating-rules']['formats']
+        elif self.config['generating-rules']['use-top-formats']:
+            self.formats = self.__get_top_x_formats(x=self.config['generating-rules']['top-formats'])
         else:
-            self.patterns = False
+            self.formats = False
             
 
     def upper_perms(self, word):
@@ -167,8 +168,8 @@ class Pwd_gen():
 
     def filter(self, results):
         """
-        Filters the given results to only match the patterns, specified in the configuration.
-        The configuration allows users to specify patterns of use the top patterns from 
+        Filters the given results to only match the formats, specified in the configuration.
+        The configuration allows users to specify formats of use the top formats from 
         the processed passwords, or not filter at all.
         
         Parameters
@@ -182,13 +183,13 @@ class Pwd_gen():
             Results from the filtering.
         """
         ctr=0
-        if self.patterns:
+        if self.formats:
             temp_results = results[:]
             results = []
             for res in temp_results:
                 ctr += 1
-                for pattern in self.patterns:
-                    if self.__check_if_pattern_match(word=res, pattern=pattern):
+                for format in self.formats:
+                    if self.__check_if_format_match(word=res, format=format):
                         results.append(res)
 
             results = list(dict.fromkeys(results))
@@ -242,23 +243,23 @@ class Pwd_gen():
             new_word = upper_w[:i].lower() + upper_w[i:]
             self.results.append(new_word)
 
-    def __check_if_pattern_match(self, word, pattern):
+    def __check_if_format_match(self, word, format):
         """
-        Checks if the pattern of a word matches to a given pattern.
+        Checks if the format of a word matches to a given format.
 
         Parameters
         ----------
         word : str
-            Word to check for matching pattern.
-        pattern : str
-            Pattern to check against word.
+            Word to check for matching format.
+        format : str
+            Format to check against word.
 
         Returns
         -------
         .bool
             Returns True if matching, False if not.
         """
-        if not(len(word) == len(pattern)):
+        if not(len(word) == len(format)):
             return False
         
         for i in range(len(word)):
@@ -273,37 +274,37 @@ class Pwd_gen():
             else:
                 c='s'
 
-            if not(c == pattern[i]):
+            if not(c == format[i]):
                 return False
                     
         return True
 
-    def __get_top_x_patterns(self, x):
+    def __get_top_x_formats(self, x):
         """
-        Gets the top x patterns from processed passwords, where x is defined in 
-        the configuration file. These patterns are used in filtering.
+        Gets the top x formats from processed passwords, where x is defined in 
+        the configuration file. These formats are used in filtering.
         
         Parameters
         ----------
         x : int
-            The number of patterns to retrieve.
+            The number of formats to retrieve.
 
         Returns
         -------
-        patterns : list
-            The patterns from processed passwords, to be used for filtering.
+        formats : list
+            The formats from processed passwords, to be used for filtering.
         """
-        file_ = self.config['processed-data']['dir']+self.config['processed-data']['format']
-        patterns = []
+        file_ = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['processed-data']['dir']+self.config['processed-data']['format']
+        formats = []
 
         with open(file_, 'r') as fd:
             lines = fd.readlines()[-x:]
             for line in lines:
                 form, occ = line.split(' ')
 
-                patterns.append(form)
+                formats.append(form)
 
-        return patterns
+        return formats
             
 if __name__=='__main__':
     pwd_gen = Pwd_gen('../config/entropass_conf.toml')    

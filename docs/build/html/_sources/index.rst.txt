@@ -10,6 +10,7 @@ Welcome to EntroPass's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   usage
    modules
 
 
