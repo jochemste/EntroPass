@@ -11,6 +11,7 @@ Welcome to EntroPass's documentation!
    :caption: Contents:
 
    usage
+   development
    modules
 
 
