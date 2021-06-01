@@ -18,12 +18,11 @@ class Pwd_score():
         dir = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['processed-data']['dir']
         self.form_fd = dir+self.config['processed-data']['format']
         self.char_fd = dir+self.config['processed-data']['char']
-        self.name_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['names']
-        self.foods_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['foods']
+
         self.__parse_formats()
         self.__parse_chars()
-        self.__parse_names()
-        self.__parse_foods()
+
+        self.__parse_categories()
         
     def score_pwd(self, pwd):
         """
@@ -153,6 +152,136 @@ class Pwd_score():
                 food = food.split('\n')[0]
                 self.foods.append(food)
 
+    def __parse_dates(self):
+        """
+        """
+        self.dates = []
+        with open(self.dates_fd, 'r') as fd:
+            for date in fd:
+                date = date.split('\n')[0]
+                self.dates.append(date)
+
+    def __parse_erotics(self):
+        """
+        """
+        self.erotics = []
+        with open(self.erotics_fd, 'r') as fd:
+            for erotic in fd:
+                erotic = erotic.split('\n')[0]
+                self.erotics.append(erotic)
+
+    def __parse_hobbys(self):
+        """
+        """
+        self.hobbys = []
+        with open(self.hobbys_fd, 'r') as fd:
+            for hobby in fd:
+                hobby = hobby.split('\n')[0]
+                self.hobbys.append(hobby)
+
+    def __parse_keystrokes(self):
+        """
+        """
+        self.keystrokes = []
+        with open(self.keystrokes_fd, 'r') as fd:
+            for keystroke in fd:
+                keystroke = keystroke.split('\n')[0]
+                self.keystrokes.append(keystroke)
+
+    def __parse_movies(self):
+        """
+        """
+        self.movies = []
+        with open(self.movies_fd, 'r') as fd:
+            for movie in fd:
+                movie = movie.split('\n')[0]
+                self.movies.append(movie)
+
+    def __parse_music(self):
+        """
+        """
+        self.music = []
+        with open(self.music_fd, 'r') as fd:
+            for m in fd:
+                m = m.split('\n')[0]
+                self.music.append(m)
+
+    def __parse_places(self):
+        """
+        """
+        self.places = []
+        with open(self.places_fd, 'r') as fd:
+            for place in fd:
+                place = place.split('\n')[0]
+                self.places.append(place)
+
+    def __parse_religions(self):
+        """
+        """
+        self.religions = []
+        with open(self.religions_fd, 'r') as fd:
+            for religion in fd:
+                religion = religion.split('\n')[0]
+                self.religions.append(religion)
+
+    def __parse_sports(self):
+        """
+        """
+        self.sports = []
+        with open(self.sports_fd, 'r') as fd:
+            for sport in fd:
+                sport = sport.split('\n')[0]
+                self.sports.append(sport)
+
+    def __parse_usernames(self):
+        """
+        """
+        self.usernames = []
+        with open(self.usernames_fd, 'r') as fd:
+            for username in fd:
+                username = username.split('\n')[0]
+                self.usernames.append(username)
+
+    def __parse_vehicles(self):
+        """
+        """
+        self.vehicles = []
+        with open(self.vehicles_fd, 'r') as fd:
+            for vehicle in fd:
+                vehicle = vehicle.split('\n')[0]
+                self.vehicles.append(vehicle)
+                
+    def __parse_categories(self):
+        """
+        """
+        self.name_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['names']['file']
+        self.foods_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['foods']['file']
+        self.dates_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['dates']['file']
+        self.erotics_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['erotics']['file']
+        self.hobbys_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['hobbys']['file']
+        self.keystrokes_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['keystrokes']['file']
+        self.movies_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['movies']['file']
+        self.music_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['music']['file']
+        self.places_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['place_or']['file']
+        self.religions_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['religion']['file']
+        self.sports_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['sport']['file']
+        self.usernames_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['usernames']['file']
+        self.vehicles_fd = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['categories']['vehicle']['file']
+
+        self.__parse_names()
+        self.__parse_foods()
+        self.__parse_dates()
+        self.__parse_erotics()
+        self.__parse_hobbys()
+        self.__parse_keystrokes()
+        self.__parse_movies()
+        self.__parse_music()
+        self.__parse_places()
+        self.__parse_religions()
+        self.__parse_sports()
+        self.__parse_usernames()
+        self.__parse_vehicles()
+
     def isalphabet(self, char):
         """
         """
@@ -160,8 +289,7 @@ class Pwd_score():
             if char in ascii_lowercase:
                 return True
 
-        return False
-
+        return False        
 if __name__=='__main__':
     p = Pwd_score('../config/entropass_conf.toml')
 

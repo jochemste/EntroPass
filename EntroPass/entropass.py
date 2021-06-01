@@ -44,6 +44,8 @@ class EntroPass():
         parser.add_argument('-u', '--update', required=False, action='store_true',
                             help='Update the formats and characters with the passwords in the passwords directory. WARNING! This can take a long time depending on the number of passwords in the passwowords directory.')
         parser.add_argument('-c', '--compare', required=False, help='Compare password to results.')
+        parser.add_argument('-o', '--output-file', required=False,
+                            help='Store resulting passwords in specified file.')
         args = parser.parse_args()
 
         if args.update:
@@ -51,6 +53,12 @@ class EntroPass():
         
         if args.debug:
             self.debug = True
+
+        if args.output_file:
+            self.output_file = args.output_file
+        else:
+            self.output_file = os.path.dirname(os.path.abspath(__file__))+'/'+\
+                self.config['print']['dir']+self.config['print']['fd']
             
         self.comp_pwd = args.compare
             
@@ -91,7 +99,7 @@ class EntroPass():
             
         if self.config['print']['file']:
             self.write_t_file()
-            cprint('Wrote', self.get_count(), 'passwords to', self.config['print']['fd'])
+            cprint('Wrote', self.get_count(), 'passwords to', self.output_file)
 
     def run_update(self):
         """
@@ -177,9 +185,11 @@ class EntroPass():
         Writes the passwords to the configured file. Creates the specified directory if it 
         does not exist.
         """
-        dir = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['print']['dir']
-        os.makedirs(dir, exist_ok=True)
-        with open(dir+self.config['print']['fd'], 'w') as fd:
+        #dir = os.path.dirname(os.path.abspath(__file__))+'/'+self.config['print']['dir']
+        dir = os.path.dirname(self.output_file)
+        if dir:
+            os.makedirs(dir, exist_ok=True)
+        with open(self.output_file, 'w') as fd:
             for p in self.passwords:
                 fd.write(p+'\n')
 
