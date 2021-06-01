@@ -70,7 +70,6 @@ char = 'char.txt'
 
 [generating-rules]
 use-rules = false
-#max_pwds = 1000000
 use-formats = false
 formats = ['cccccc'] # Allows the program to only generate passwords according to this format
 use-top-formats = true
