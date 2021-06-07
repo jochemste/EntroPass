@@ -4,6 +4,7 @@ import itertools
 import toml
 from threading import Thread
 import os
+import re
 
 class Pwd_gen():
     """
@@ -20,6 +21,8 @@ class Pwd_gen():
             File path of the configuration file.
         """
         self.config = toml.load(config_fd)
+        if self.config['generating-rules']['use-regex']:
+            self.regex = self.config['generating-rules']['regex']
         if self.config['generating-rules']['use-formats']:
             self.formats = self.config['generating-rules']['formats']
         elif self.config['generating-rules']['use-top-formats']:
@@ -61,11 +64,35 @@ class Pwd_gen():
         t2.join()
         t3.join()
 
+        
+
         results = list(dict.fromkeys(self.results))
         self.result = []
         return results
 
-    def word_perms(self, words, nr_in_result,
+    def reverse(self, word):
+        """
+        Reverse a word. For example, "word" turns into "drow".
+
+        Parameters
+        ----------
+        word : str
+            Word to reverse
+        """
+        reverse = word[::-1]
+        return reverse
+
+    def fraction(self, word):
+        """
+        Returns fractions of the given word. For example, 
+        for "word" it will return ['w', 'wo', 'wor']
+        """
+        fracs = []
+        for i in range(len(word)):
+            fracs.append(word[:i])
+        return fracs
+
+    def word_perms(self, words, nr_in_result=2,
                    add_cmmn_sep=True, add_cmmn_end=True):
         """
         Permutations of given words, using a given amount of  words per
@@ -88,18 +115,24 @@ class Pwd_gen():
         results : list
             Resulting permutations.
         """
-        perms = itertools.permutations([c for c in words], nr_in_result)
-        if add_cmmn_sep:
-            cmmn_sep = self.config['common-separators']['list']
-            perms2 = itertools.permutations([c for c in words]+cmmn_sep,
-                                            nr_in_result+1)
-        if add_cmmn_end:
-            cmmn_end = self.config['common-end']['list']
-            perms3 = itertools.permutations([c for c in words]+cmmn_end,
-                                            nr_in_result+1)
+        results = []
+        for i in range(1, nr_in_result+1):
+            perms = itertools.permutations([c for c in words], i)
+            #perms = itertools.permutations([c for c in words], nr_in_result)
+            if add_cmmn_sep:
+                cmmn_sep = self.config['common-separators']['list']
+                perms2 = itertools.permutations([c for c in words]+cmmn_sep, i)
+                #perms2 = itertools.permutations([c for c in words]+cmmn_sep,
+                #                                nr_in_result+1)
+            if add_cmmn_end:
+                cmmn_end = self.config['common-end']['list']
+                #perms3 = itertools.permutations([c for c in words]+cmmn_end,
+                #                                nr_in_result+1)
+                perms3 = itertools.permutations([c for c in words]+cmmn_end, i)
 
-        results = [''.join(p) for p in perms]+[''.join(p) for p in perms2]+\
-            [''.join(p) for p in perms3]
+            results += [''.join(p) for p in perms]+[''.join(p) for p in perms2]+\
+                [''.join(p) for p in perms3]
+        
         results = list(dict.fromkeys(results))
         self.result = []
         return results
@@ -166,6 +199,11 @@ class Pwd_gen():
         self.result = []
         return results
 
+    def add_cmmn_chars(self,  word: str):
+        """
+        """
+        
+
     def filter(self, results):
         """
         Filters the given results to only match the formats, specified in the configuration.
@@ -183,6 +221,13 @@ class Pwd_gen():
             Results from the filtering.
         """
         ctr=0
+        reg_res = []
+        if self.regex:
+            temp_results = results[:]
+            for res in temp_results:
+                for regex in self.regex:
+                    if re.match(pattern=regex, string=res):
+                        reg_res.append(res)
         if self.formats:
             temp_results = results[:]
             results = []
@@ -192,7 +237,7 @@ class Pwd_gen():
                     if self.__check_if_format_match(word=res, format=format):
                         results.append(res)
 
-            results = list(dict.fromkeys(results))
+        results = list(dict.fromkeys(results+reg_res))
         return results
 
     def __single_c_upper(self, word):

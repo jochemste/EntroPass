@@ -70,7 +70,7 @@ class Pwd_score():
         """
         score = 0.0
         max_score = 1.0
-        weight = (max_score-score)/len(pwd)
+        weight = (max_score-score)/(len(pwd)+1)
 
         for c in pwd:
             if c == char:

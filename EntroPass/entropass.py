@@ -32,7 +32,7 @@ class EntroPass():
         """
         try:
             self.config = toml.load(self.config_fd)
-            success('Loaded configuration from', self.config_fd)
+            success('Loaded configuration from', os.path.abspath(self.config_fd))
         except Exception as e:
             error('Could not load', self.config_fd,
                   ':', e)
@@ -57,8 +57,9 @@ class EntroPass():
         if args.output_file:
             self.output_file = args.output_file
         else:
-            self.output_file = os.path.dirname(os.path.abspath(__file__))+'/'+\
-                self.config['print']['dir']+self.config['print']['fd']
+            self.output_file = os.path.abspath(os.path.dirname(os.path.abspath(__file__))+'/'+\
+                                               self.config['print']['dir']+\
+                                               self.config['print']['fd'])
             
         self.comp_pwd = args.compare
             
@@ -127,9 +128,12 @@ class EntroPass():
         ctr = length
         for w in self.seed_words:
             res = self.gen.upper_perms(word=w)
+            res += self.gen.fraction(w)
+            res += [self.gen.reverse(w)]
             self.passwords.append(res)
             cprint('Expanding seed words: ', length, '->', ctr, end='\r')
             ctr += len(res)
+
         print()
         
     def run_permutations(self):
@@ -137,8 +141,7 @@ class EntroPass():
         Generates permutations of the seed words and adds them to the password lists.
         """
         cprint('Generating permutations')
-        self.passwords.append(self.gen.word_perms(words=self.seed_words,
-                                                  nr_in_result=2))
+        self.passwords.append(self.gen.word_perms(words=self.seed_words))
 
     def run_replace(self):
         """
