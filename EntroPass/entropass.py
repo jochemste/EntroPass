@@ -3,6 +3,7 @@ from pwd_gen import Pwd_gen
 from pwd_score import Pwd_score
 from print_utils import *
 from colorama import Fore, Style, Back
+from art import *
 from threading import Thread
 import subprocess
 import argparse
@@ -30,9 +31,11 @@ class EntroPass():
         """
         Load configuration file, parse the command line parameters and loads the seed words.
         """
+        art = text2art("EntroPass", "rnd-xlarge")
+        print(Fore.GREEN+art+Style.RESET_ALL)
         try:
             self.config = toml.load(self.config_fd)
-            success('Loaded configuration from', os.path.abspath(self.config_fd))
+            success('Loaded configuration')# from', #os.path.abspath(self.config_fd))
         except Exception as e:
             error('Could not load', self.config_fd,
                   ':', e)
@@ -42,7 +45,7 @@ class EntroPass():
         parser.add_argument('-d', '--debug', required=False, action='store_true',
                             help='Turn on debugging mode. NOT IMPLEMENTED YET')
         parser.add_argument('-u', '--update', required=False, action='store_true',
-                            help='Update the formats and characters with the passwords in the passwords directory. WARNING! This can take a long time depending on the number of passwords in the passwowords directory.')
+                            help='Update the formats and characters with the passwords in the passwords directory. WARNING! This can take a long time depending on the number of passwords in the passwords directory.')
         parser.add_argument('-c', '--compare', required=False, help='Compare password to results.')
         parser.add_argument('-o', '--output-file', required=False,
                             help='Store resulting passwords in specified file.')
@@ -125,15 +128,18 @@ class EntroPass():
         self.passwords.append(self.seed_words)
 
         length = len(self.seed_words)
+        temp_seed_words = self.seed_words[:]
         ctr = length
         for w in self.seed_words:
             res = self.gen.upper_perms(word=w)
             res += self.gen.fraction(w)
             res += [self.gen.reverse(w)]
+            temp_seed_words += res
             self.passwords.append(res)
             cprint('Expanding seed words: ', length, '->', ctr, end='\r')
             ctr += len(res)
 
+        self.seed_words = temp_seed_words[:]
         print()
         
     def run_permutations(self):
@@ -141,7 +147,8 @@ class EntroPass():
         Generates permutations of the seed words and adds them to the password lists.
         """
         cprint('Generating permutations')
-        self.passwords.append(self.gen.word_perms(words=self.seed_words))
+        new = self.gen.word_perms(words=self.seed_words)
+        self.passwords.append(new)
 
     def run_replace(self):
         """
@@ -154,9 +161,18 @@ class EntroPass():
         for passwords in self.passwords:
             for p in passwords:
                 new_psswds += self.gen.rep_cmmn_chars(word=p,
-                                                      iterations=4)
-                cprint('Resulting passwords:', ctr, end='\r')
+                                                      iterations=2)
+                cprint('Resulting passwords:', ctr, p, ' '*20, end='\r')
                 ctr = len(new_psswds)
+                if self.config['generating-rules']['max-generated'] and \
+                   ctr > self.config['generating-rules']['max-generated']:
+                    print()
+                    warning('Max gen of',
+                            self.config['generating-rules']['max-generated'], 'passed:', ctr)
+                    break
+            if self.config['generating-rules']['max-generated'] and \
+               ctr > self.config['generating-rules']['max-generated']:
+                break
 
         print()
         self.passwords.append(new_psswds)

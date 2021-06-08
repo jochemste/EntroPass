@@ -121,14 +121,14 @@ class Pwd_gen():
             #perms = itertools.permutations([c for c in words], nr_in_result)
             if add_cmmn_sep:
                 cmmn_sep = self.config['common-separators']['list']
-                perms2 = itertools.permutations([c for c in words]+cmmn_sep, i)
+                perms2 = itertools.permutations([c for c in words]+cmmn_sep, i+1)
                 #perms2 = itertools.permutations([c for c in words]+cmmn_sep,
                 #                                nr_in_result+1)
             if add_cmmn_end:
                 cmmn_end = self.config['common-end']['list']
                 #perms3 = itertools.permutations([c for c in words]+cmmn_end,
                 #                                nr_in_result+1)
-                perms3 = itertools.permutations([c for c in words]+cmmn_end, i)
+                perms3 = itertools.permutations([c for c in words]+cmmn_end, i+1)
 
             results += [''.join(p) for p in perms]+[''.join(p) for p in perms2]+\
                 [''.join(p) for p in perms3]
@@ -222,22 +222,24 @@ class Pwd_gen():
         """
         ctr=0
         reg_res = []
+        new_results = []
+        regexes = [re.compile(r) for r in self.regex]
         if self.regex:
             temp_results = results[:]
-            for res in temp_results:
-                for regex in self.regex:
-                    if re.match(pattern=regex, string=res):
-                        reg_res.append(res)
+            for r in regexes:
+                reg_res = list(filter(r.search, temp_results))
+
+        form_res = []
         if self.formats:
             temp_results = results[:]
-            results = []
+            form_res = []
             for res in temp_results:
                 ctr += 1
                 for format in self.formats:
                     if self.__check_if_format_match(word=res, format=format):
-                        results.append(res)
+                        form_res.append(res)
 
-        results = list(dict.fromkeys(results+reg_res))
+        results = list(dict.fromkeys(form_res+reg_res))
         return results
 
     def __single_c_upper(self, word):
