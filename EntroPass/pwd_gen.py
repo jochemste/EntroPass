@@ -1,4 +1,3 @@
-
 from string import ascii_lowercase
 import itertools
 import toml
@@ -98,6 +97,8 @@ class Pwd_gen():
         Permutations of given words, using a given amount of  words per
         result. For example: words=['hello', 'world', '!'], nr_in_result=2 
         would give results like: 'hello!', 'helloworld', '!world', etc.
+        It also parses over itself, incrementing the number of words in the results until it 
+        reaches the nr_in_result.
 
         Parameters
         ----------
@@ -198,17 +199,13 @@ class Pwd_gen():
         results = list(dict.fromkeys(results)) # remove duplicates
         self.result = []
         return results
-
-    def add_cmmn_chars(self,  word: str):
-        """
-        """
         
-
     def filter(self, results):
         """
-        Filters the given results to only match the formats, specified in the configuration.
-        The configuration allows users to specify formats of use the top formats from 
-        the processed passwords, or not filter at all.
+        Filters the given results to only match the formats or regexes,
+        specified in the configuration.
+        The configuration allows users to specify formats or regexes, or use the top formats from 
+        the processed passwords, or not filter at all (not recommended).
         
         Parameters
         ----------

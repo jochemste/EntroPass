@@ -42,9 +42,11 @@
 \indexentry{EntroPass.pwd\_gen@\spxentry{EntroPass.pwd\_gen}!module@\spxentry{module}|hyperpage}{11}
 \indexentry{Pwd\_gen (class in EntroPass.pwd\_gen)@\spxentry{Pwd\_gen}\spxextra{class in EntroPass.pwd\_gen}|hyperpage}{11}
 \indexentry{filter() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{filter()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
+\indexentry{fraction() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{fraction()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
 \indexentry{rep\_cmmn\_chars() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{rep\_cmmn\_chars()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
+\indexentry{reverse() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{reverse()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
 \indexentry{upper\_perms() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{upper\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
-\indexentry{word\_perms() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{word\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{11}
+\indexentry{word\_perms() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{word\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}|hyperpage}{12}
 \indexentry{module@\spxentry{module}!EntroPass.pwd\_score@\spxentry{EntroPass.pwd\_score}|hyperpage}{12}
 \indexentry{EntroPass.pwd\_score@\spxentry{EntroPass.pwd\_score}!module@\spxentry{module}|hyperpage}{12}
 \indexentry{Pwd\_score (class in EntroPass.pwd\_score)@\spxentry{Pwd\_score}\spxextra{class in EntroPass.pwd\_score}|hyperpage}{12}
@@ -55,8 +57,8 @@
 \indexentry{isalphabet() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{isalphabet()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
 \indexentry{score\_pwd() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
 \indexentry{score\_pwd\_chars() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_chars()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
-\indexentry{score\_pwd\_format() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_format()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
-\indexentry{score\_pwd\_name() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_name()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
-\indexentry{score\_pwd\_pattern() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_pattern()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{12}
-\indexentry{module@\spxentry{module}!EntroPass@\spxentry{EntroPass}|hyperpage}{12}
-\indexentry{EntroPass@\spxentry{EntroPass}!module@\spxentry{module}|hyperpage}{12}
+\indexentry{score\_pwd\_format() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_format()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{13}
+\indexentry{score\_pwd\_name() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_name()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{13}
+\indexentry{score\_pwd\_pattern() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_pattern()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}|hyperpage}{13}
+\indexentry{module@\spxentry{module}!EntroPass@\spxentry{EntroPass}|hyperpage}{14}
+\indexentry{EntroPass@\spxentry{EntroPass}!module@\spxentry{module}|hyperpage}{14}

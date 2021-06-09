@@ -359,9 +359,10 @@ character combinations, replacement of characters, and more.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Filters the given results to only match the formats, specified in the configuration.
-The configuration allows users to specify formats of use the top formats from
-the processed passwords, or not filter at all.</p>
+<dd><p>Filters the given results to only match the formats or regexes,
+specified in the configuration.
+The configuration allows users to specify formats or regexes, or use the top formats from
+the processed passwords, or not filter at all (not recommended).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>results</strong> (<em>list</em>) – Results to be checked and filtered.</p>
@@ -373,6 +374,13 @@ the processed passwords, or not filter at all.</p>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.fraction">
+<span class="sig-name descname"><span class="pre">fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.fraction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fractions of the given word. For example,
+for “word” it will return [‘w’, ‘wo’, ‘wor’]</p>
 </dd></dl>
 
 <dl class="py method">
@@ -406,6 +414,17 @@ become words like ‘&#64;||’ for example.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse a word. For example, “word” turns into “drow”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>word</strong> (<em>str</em>) – Word to reverse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.upper_perms">
 <span class="sig-name descname"><span class="pre">upper_perms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.upper_perms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change characters in word to upper characters. Changes single characters first:
@@ -428,10 +447,12 @@ Runs in three threads for speed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_gen.Pwd_gen.word_perms">
-<span class="sig-name descname"><span class="pre">word_perms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_in_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_cmmn_sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_cmmn_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.word_perms" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">word_perms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_in_result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_cmmn_sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_cmmn_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_gen.Pwd_gen.word_perms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Permutations of given words, using a given amount of  words per
 result. For example: words=[‘hello’, ‘world’, ‘!’], nr_in_result=2
-would give results like: ‘hello!’, ‘helloworld’, ‘!world’, etc.</p>
+would give results like: ‘hello!’, ‘helloworld’, ‘!world’, etc.
+It also parses over itself, incrementing the number of words in the results until it
+reaches the nr_in_result.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -482,32 +503,124 @@ would give results like: ‘hello!’, ‘helloworld’, ‘!world’, etc.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.isalphabet">
 <span class="sig-name descname"><span class="pre">isalphabet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.isalphabet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if a character is in the alphabet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>char</strong> (<em>str</em>) – Character to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if in alphabet, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.score_pwd">
 <span class="sig-name descname"><span class="pre">score_pwd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.score_pwd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scores the given password, based on format, used chars, presence in categories
+and known patterns. Returns the score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pwd</strong> (<em>str</em>) – The password to score.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> – The score of the password.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.score_pwd_chars">
 <span class="sig-name descname"><span class="pre">score_pwd_chars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occurrences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.score_pwd_chars" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scores the given password based on used characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pwd</strong> (<em>str</em>) – The password to score</p></li>
+<li><p><strong>char</strong> (<em>str</em>) – The character to check the password for.</p></li>
+<li><p><strong>occurrences</strong> (<em>int</em>) – The number of times the character occurred.</p></li>
+<li><p><strong>chars_weight</strong> (<em>float</em><em>, </em><em>0.1</em>) – The weight that character score have in the scoring process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The rounded score as an integer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.score_pwd_format">
 <span class="sig-name descname"><span class="pre">score_pwd_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occurrences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.score_pwd_format" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scores the given password on the given format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pwd</strong> (<em>str</em>) – The password to score</p></li>
+<li><p><strong>format</strong> (<em>str</em>) – The format to compare the password against</p></li>
+<li><p><strong>occurrences</strong> (<em>int</em>) – The number of times the format occurred. This is used to give a weight to the score.</p></li>
+<li><p><strong>format_weight</strong> (<em>float</em><em>, </em><em>100.0</em>) – The weight that formats receive in the entire scoring process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The rounded score as an integer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.score_pwd_name">
 <span class="sig-name descname"><span class="pre">score_pwd_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.score_pwd_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scores the password based on a name being present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pwd</strong> (<em>str</em>) – The password to score</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name to check the password for.</p></li>
+<li><p><strong>occurrences</strong> (<em>int</em>) – The number of times the name occurred.</p></li>
+<li><p><strong>chars_weight</strong> (<em>float</em><em>, </em><em>10000.0</em>) – The weight that name scores have in the scoring process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The rounded score as an integer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="EntroPass.pwd_score.Pwd_score.score_pwd_pattern">
 <span class="sig-name descname"><span class="pre">score_pwd_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patt_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#EntroPass.pwd_score.Pwd_score.score_pwd_pattern" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Scores a pwd for a specific pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pwd</strong> (<em>str</em>) – The password to score</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>) – The regex pattern to check the password for.</p></li>
+<li><p><strong>patt_weight</strong> (<em>float</em><em>, </em><em>10000.0</em>) – The weight that pattern scores have in the scoring process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The rounded score as an integer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

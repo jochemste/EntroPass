@@ -61,7 +61,7 @@
 
 
 \title{EntroPass}
-\date{Jun 01, 2021}
+\date{Jun 09, 2021}
 \release{0.1}
 \author{Jochem Stevense}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -929,9 +929,10 @@ character combinations, replacement of characters, and more.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_gen.Pwd_gen.filter}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{filter}}}{\emph{\DUrole{n}{results}}}{}
 \sphinxAtStartPar
-Filters the given results to only match the formats, specified in the configuration.
-The configuration allows users to specify formats of use the top formats from
-the processed passwords, or not filter at all.
+Filters the given results to only match the formats or regexes,
+specified in the configuration.
+The configuration allows users to specify formats or regexes, or use the top formats from
+the processed passwords, or not filter at all (not recommended).
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
 \sphinxAtStartPar
@@ -946,6 +947,16 @@ the processed passwords, or not filter at all.
 list
 
 \end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{fraction() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{fraction()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_gen.Pwd_gen.fraction}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fraction}}}{\emph{\DUrole{n}{word}}}{}
+\sphinxAtStartPar
+Returns fractions of the given word. For example,
+for “word” it will return {[}‘w’, ‘wo’, ‘wor’{]}
 
 \end{fulllineitems}
 
@@ -992,6 +1003,21 @@ list
 
 \end{fulllineitems}
 
+\index{reverse() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{reverse()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_gen.Pwd_gen.reverse}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{reverse}}}{\emph{\DUrole{n}{word}}}{}
+\sphinxAtStartPar
+Reverse a word. For example, “word” turns into “drow”.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{word}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Word to reverse
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
 \index{upper\_perms() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{upper\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}}
 
 \begin{fulllineitems}
@@ -1022,11 +1048,13 @@ list
 \index{word\_perms() (EntroPass.pwd\_gen.Pwd\_gen method)@\spxentry{word\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_gen.Pwd_gen.word_perms}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{word\_perms}}}{\emph{\DUrole{n}{words}}, \emph{\DUrole{n}{nr\_in\_result}}, \emph{\DUrole{n}{add\_cmmn\_sep}\DUrole{o}{=}\DUrole{default_value}{True}}, \emph{\DUrole{n}{add\_cmmn\_end}\DUrole{o}{=}\DUrole{default_value}{True}}}{}
+\phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_gen.Pwd_gen.word_perms}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{word\_perms}}}{\emph{\DUrole{n}{words}}, \emph{\DUrole{n}{nr\_in\_result}\DUrole{o}{=}\DUrole{default_value}{2}}, \emph{\DUrole{n}{add\_cmmn\_sep}\DUrole{o}{=}\DUrole{default_value}{True}}, \emph{\DUrole{n}{add\_cmmn\_end}\DUrole{o}{=}\DUrole{default_value}{True}}}{}
 \sphinxAtStartPar
 Permutations of given words, using a given amount of  words per
 result. For example: words={[}‘hello’, ‘world’, ‘!’{]}, nr\_in\_result=2
 would give results like: ‘hello!’, ‘helloworld’, ‘!world’, etc.
+It also parses over itself, incrementing the number of words in the results until it
+reaches the nr\_in\_result.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
@@ -1099,36 +1127,195 @@ Bases: \sphinxcode{\sphinxupquote{object}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.isalphabet}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{isalphabet}}}{\emph{\DUrole{n}{char}}}{}
+\sphinxAtStartPar
+Checks if a character is in the alphabet.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{char}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Character to check.
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+True if in alphabet, False otherwise
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+bool
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{score\_pwd() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.score_pwd}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_pwd}}}{\emph{\DUrole{n}{pwd}}}{}
+\sphinxAtStartPar
+Scores the given password, based on format, used chars, presence in categories
+and known patterns. Returns the score.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pwd}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The password to score.
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+\sphinxstylestrong{score} \textendash{} The score of the password.
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+int
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{score\_pwd\_chars() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_chars()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.score_pwd_chars}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_pwd\_chars}}}{\emph{\DUrole{n}{pwd}}, \emph{\DUrole{n}{char}}, \emph{\DUrole{n}{occurrences}}, \emph{\DUrole{n}{chars\_weight}\DUrole{o}{=}\DUrole{default_value}{0.1}}}{}
+\sphinxAtStartPar
+Scores the given password based on used characters.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pwd}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The password to score
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{char}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The character to check the password for.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{occurrences}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}) \textendash{} The number of times the character occurred.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{chars\_weight}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{0.1}}) \textendash{} The weight that character score have in the scoring process.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+The rounded score as an integer.
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+int
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{score\_pwd\_format() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_format()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.score_pwd_format}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_pwd\_format}}}{\emph{\DUrole{n}{pwd}}, \emph{\DUrole{n}{format\_}}, \emph{\DUrole{n}{occurrences}}, \emph{\DUrole{n}{format\_weight}\DUrole{o}{=}\DUrole{default_value}{100.0}}}{}
+\sphinxAtStartPar
+Scores the given password on the given format.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pwd}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The password to score
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{format}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The format to compare the password against
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{occurrences}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}) \textendash{} The number of times the format occurred. This is used to give a weight to the score.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{format\_weight}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{100.0}}) \textendash{} The weight that formats receive in the entire scoring process.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+The rounded score as an integer.
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+int
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{score\_pwd\_name() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_name()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.score_pwd_name}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_pwd\_name}}}{\emph{\DUrole{n}{pwd}}, \emph{\DUrole{n}{name}}, \emph{\DUrole{n}{name\_weight}\DUrole{o}{=}\DUrole{default_value}{10000.0}}}{}
+\sphinxAtStartPar
+Scores the password based on a name being present.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pwd}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The password to score
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{name}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The name to check the password for.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{occurrences}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}) \textendash{} The number of times the name occurred.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{chars\_weight}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{10000.0}}) \textendash{} The weight that name scores have in the scoring process.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+The rounded score as an integer.
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+int
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{score\_pwd\_pattern() (EntroPass.pwd\_score.Pwd\_score method)@\spxentry{score\_pwd\_pattern()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{EntroPass:EntroPass.pwd_score.Pwd_score.score_pwd_pattern}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_pwd\_pattern}}}{\emph{\DUrole{n}{pwd}}, \emph{\DUrole{n}{pattern}}, \emph{\DUrole{n}{patt\_weight}\DUrole{o}{=}\DUrole{default_value}{100.0}}}{}
+\sphinxAtStartPar
+Scores a pwd for a specific pattern.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pwd}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The password to score
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{pattern}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} The regex pattern to check the password for.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{patt\_weight}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{10000.0}}) \textendash{} The weight that pattern scores have in the scoring process.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+\sphinxAtStartPar
+The rounded score as an integer.
+
+\item[{Return type}] \leavevmode
+\sphinxAtStartPar
+int
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 

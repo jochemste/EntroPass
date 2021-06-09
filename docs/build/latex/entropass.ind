@@ -25,7 +25,7 @@
   \indexspace
   \bigletter E
   \item \spxentry{EntroPass}
-    \subitem \spxentry{module}, \hyperpage{12}
+    \subitem \spxentry{module}, \hyperpage{14}
   \item \spxentry{EntroPass}\spxextra{class in EntroPass.entropass}, \hyperpage{9}
   \item \spxentry{EntroPass.entropass}
     \subitem \spxentry{module}, \hyperpage{9}
@@ -47,6 +47,7 @@
   \item \spxentry{format}, \hyperpage{3}
   \item \spxentry{formats}, \hyperpage{3}
   \item \spxentry{forms}\spxextra{EntroPass.pwd\_score.Pwd\_score attribute}, \hyperpage{12}
+  \item \spxentry{fraction()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}, \hyperpage{11}
 
   \indexspace
   \bigletter G
@@ -65,7 +66,7 @@
   \bigletter M
   \item \spxentry{max\_words}, \hyperpage{1}
   \item \spxentry{module}
-    \subitem \spxentry{EntroPass}, \hyperpage{12}
+    \subitem \spxentry{EntroPass}, \hyperpage{14}
     \subitem \spxentry{EntroPass.entropass}, \hyperpage{9}
     \subitem \spxentry{EntroPass.print\_utils}, \hyperpage{10}
     \subitem \spxentry{EntroPass.pwd\_gen}, \hyperpage{11}
@@ -86,6 +87,7 @@
   \indexspace
   \bigletter R
   \item \spxentry{rep\_cmmn\_chars()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}, \hyperpage{11}
+  \item \spxentry{reverse()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}, \hyperpage{11}
   \item \spxentry{run()}\spxextra{EntroPass.entropass.EntroPass method}, \hyperpage{9}
   \item \spxentry{run\_filter()}\spxextra{EntroPass.entropass.EntroPass method}, \hyperpage{9}
   \item \spxentry{run\_permutations()}\spxextra{EntroPass.entropass.EntroPass method}, 
@@ -101,11 +103,11 @@
   \item \spxentry{score\_pwd\_chars()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}, 
 		\hyperpage{12}
   \item \spxentry{score\_pwd\_format()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}, 
-		\hyperpage{12}
+		\hyperpage{13}
   \item \spxentry{score\_pwd\_name()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}, 
-		\hyperpage{12}
+		\hyperpage{13}
   \item \spxentry{score\_pwd\_pattern()}\spxextra{EntroPass.pwd\_score.Pwd\_score method}, 
-		\hyperpage{12}
+		\hyperpage{13}
   \item \spxentry{scored\_pwds}\spxextra{EntroPass.entropass.EntroPass attribute}, \hyperpage{10}
   \item \spxentry{shell}, \hyperpage{2}
   \item \spxentry{sort}, \hyperpage{2}
@@ -119,7 +121,7 @@
   \indexspace
   \bigletter W
   \item \spxentry{warning()}\spxextra{in module EntroPass.print\_utils}, \hyperpage{10}
-  \item \spxentry{word\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}, \hyperpage{11}
+  \item \spxentry{word\_perms()}\spxextra{EntroPass.pwd\_gen.Pwd\_gen method}, \hyperpage{12}
   \item \spxentry{write\_t\_file()}\spxextra{EntroPass.entropass.EntroPass method}, \hyperpage{10}
 
 \end{sphinxtheindex}
